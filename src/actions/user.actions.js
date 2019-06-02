@@ -1,7 +1,4 @@
-import {
-    LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILURE,
-    FETCH_USER_START, FETCH_USER_SUCCESS
-} from '../constants/user.constants';
+import { LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILURE, FETCH_USER_START, FETCH_USER_SUCCESS } from '../constants/user.constants';
 
 export function login(name, password){
     return{
