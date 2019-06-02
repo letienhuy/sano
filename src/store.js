@@ -4,7 +4,13 @@ import rootReducer from './reducers/root.reducers';
 import rootSaga from './sagas/index';
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
+const initialState = {
+    userReducer: {
+        user: JSON.parse(localStorage.getItem('user')),
+        accessToken: localStorage.getItem('accessToken')
+    }
+}
+const store = createStore(rootReducer, initialState, applyMiddleware(sagaMiddleware));
 
 sagaMiddleware.run(rootSaga);
 
