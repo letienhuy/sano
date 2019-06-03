@@ -239,6 +239,7 @@ header{
             li{
                 position: relative;
                 margin-bottom: 5px;
+                overflow: hidden;
                 i{
                     position: absolute;
                     width: 20px;
@@ -268,13 +269,15 @@ header{
                     }
                 }
                 .sub-menu{
-                    display: none;
+                    height: 0;
                     padding: 0;
                     margin: 0;
                     margin-left: 40px;
                     list-style: none;
                     font-size: 14px;
                     border-left: 2px solid $primaryColor;
+                    transform: translateX(-50%);
+                    transition: all .1s ease-in;
                     li{
                         i{
                             background-color: transparent;
@@ -290,9 +293,11 @@ header{
                 }
                 &:hover{
                     .sub-menu{
-                        display: block;
+                        height: unset;
+                        transform: translateX(0);
                     }
                 }
+                
             }
             li.active{
                 & > span, & > a, & > i{
@@ -300,7 +305,8 @@ header{
                     color: #ffffff;
                 }
                 .sub-menu{
-                    display: block;
+                    height: unset;
+                    transform: translateX(0);
                 }
             }
         }
@@ -1167,4 +1173,21 @@ header{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+@keyframes side{
+    from{
+        transform: translateX(-100%);
+    }
+    to{
+        transform: translateX(0);
+    }
+}
+@keyframes hide{
+    from{
+        transform: translateX(0);
+    }
+    to{
+        transform: translateX(-100%);
+    }
 }

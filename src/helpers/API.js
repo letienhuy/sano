@@ -3,7 +3,7 @@ import * as url from '../constants/url.constants';
 
 export async function postLogin(name, password) {
     const result = await axios.post(url.LOGIN_URL, {name, password});
-    return result.data;
+    return result;
 }
 
 export async function fetchUser(accessToken) {
@@ -12,5 +12,5 @@ export async function fetchUser(accessToken) {
             "Authorization": `Bearer ${accessToken}`
         }
     });
-    return result.data;
+    return result;
 }

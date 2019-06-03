@@ -6,7 +6,7 @@ import LoadingBar from 'react-redux-loading-bar';
 export class Header extends Component {
     static propTypes = {
         className: PropTypes.string,
-        isToggleSidebar: PropTypes.bool,
+        hideToggle: PropTypes.bool,
     }
     handleToggle = () => {
         let parentToggle = document.querySelector('.toggle-navigation');
@@ -22,8 +22,8 @@ export class Header extends Component {
     }
     render() {
         return (
-            <header className={this.props.className}>
-                {this.props.isToggleSidebar ? (
+            <header className="bg-black">
+                {! this.props.hideToggle ? (
                     <div className="toggle-navigation">
                         <button className="btn-toggle" onClick={this.handleToggle}>
                             <span className="icon-bar"></span>

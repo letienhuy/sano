@@ -7,10 +7,23 @@ import {LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILURE, FETCH_USER_START, FETCH_USER_
 export function* fetchUser(action) {
     try {
         const data = yield call(API.fetchUser, action.access_token);
-        localStorage.setItem('user', JSON.stringify(data.data));
+        localStorage.setItem('user', JSON.stringify(data.data.data));
         yield put({
             type: FETCH_USER_SUCCESS,
-            ...data.data
+            ...data.data.data
+        });
+    } catch (error) {
+        localStorage.clear();
+    }
+}
+
+export function* authenticated(action) {
+    try {
+        const data = yield call(API.fetchUser, action.access_token);
+        localStorage.setItem('user', btoa(JSON.stringify(data.data.data)));
+        yield put({
+            type: FETCH_USER_SUCCESS,
+            ...data.data.data
         });
         yield put(
             {type: LOGIN_SUCCESS, accessToken: action.access_token, message: action.message}
@@ -19,7 +32,7 @@ export function* fetchUser(action) {
         localStorage.clear();
         yield put({
             type: LOGIN_FAILURE,
-            ...error.data
+            ...error.response.data
         });
     } finally {
         yield put(hideLoading());
@@ -30,24 +43,23 @@ export function* authentication(action) {
     try {
         yield put(showLoading());
         const data = yield call(API.postLogin, action.name, action.password);
-        localStorage.setItem("accessToken", data.access_token);
+        localStorage.setItem("accessToken", data.data.access_token);
         yield put({
             type: FETCH_USER_START,
-            ...data
+            ...data.data
         });
     } catch (error) {
         yield put({
             type: LOGIN_FAILURE,
             ...error.response.data
         });
-    } finally {
         yield put(hideLoading());
     }
 }
 
 function* rootSaga() {
     yield takeEvery(LOGIN_START, authentication);
-    yield takeEvery(FETCH_USER_START, fetchUser);
+    yield takeEvery(FETCH_USER_START, authenticated);
 }
 
 export default rootSaga;

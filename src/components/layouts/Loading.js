@@ -6,14 +6,10 @@ export default class Loading extends Component {
         return (
             <div className="loading-fullscreen">
                 <ClimbingBoxLoader
-                    css={`
-                        display: block;
-                        margin: 0 auto;
-                    `}
-                    sizeUnit={"px"}
+                    sizeUnit="px"
                     size={15}
-                    color={'#117EBF'}
-                    loading={true}/>
+                    color="#117EBF"
+                    loading={this.props.loading}/>
             </div>
         )
     }

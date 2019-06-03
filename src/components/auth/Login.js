@@ -16,13 +16,13 @@ export class Login extends Component {
         dispatch(userActions.login(this.nameInput.value, this.passwordInput.value));
     }
     render() {
-        const {user, accessToken, loading, message, code} = this.props.userReducer;
+        const {user, accessToken, loading, message, code} = this.props.auth;
         if (user && accessToken) {
             return <Redirect to="/"/>
         }
         return (
             <div>
-                <Header className="bg-black"/>
+                <Header className="bg-black" hideToggle={true}/>
                 <div className="container">
                     <div className="login">
                         <div className="login-wrap">
@@ -76,6 +76,8 @@ export class Login extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({userReducer: state.userReducer});
+const mapStateToProps = (state) => ({
+    auth: state.userReducer
+});
 
 export default connect(mapStateToProps)(Login);
