@@ -6,6 +6,7 @@ import { route, setActive } from '../../routes';
 
 export class Sidebar extends Component {
     componentDidMount(){
+        
     }
     
     render() {

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {Header} from '../layouts/Header';
-import * as userActions from '../../actions/user.actions';
-import BtnLoading from '../layouts/BtnLoading';
+import { login } from '../../actions/user.actions';
+import LoadingIcon from '../layouts/LoadingIcon';
 
 export class Login extends Component {
     static propTypes = {}
@@ -13,10 +13,10 @@ export class Login extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         const {dispatch} = this.props;
-        dispatch(userActions.login(this.nameInput.value, this.passwordInput.value));
+        dispatch(login(this.nameInput.value, this.passwordInput.value));
     }
     render() {
-        const {user, accessToken, loading, message, code} = this.props.auth;
+        const {user, accessToken, loading, message, error} = this.props.auth;
         if (user && accessToken) {
             return <Redirect to="/"/>
         }
@@ -34,9 +34,9 @@ export class Login extends Component {
                                     <form ref={(el) => this.loginForm = el} onSubmit={this.handleSubmit}>
                                         <span
                                             style={{
-                                                color: code
-                                                    ? "green"
-                                                    : "red"
+                                                color: error
+                                                    ? "red"
+                                                    : "green"
                                             }}>{message}</span>
                                         <div className="input-container">
                                             <label htmlFor="username">Tài khoản</label>
@@ -61,7 +61,7 @@ export class Login extends Component {
                                         <button className="btn login-btn">
                                             {
                                                 loading
-                                                    ? <BtnLoading loading={loading}/>
+                                                    ? <LoadingIcon loading={loading}/>
                                                     : "Đăng nhập"
                                             }
                                         </button>

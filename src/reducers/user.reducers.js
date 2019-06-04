@@ -2,7 +2,10 @@ import {LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILURE, FETCH_USER_SUCCESS, FETCH_USE
 
 const initialState = {
     user: null,
-    accessToken: null
+    accessToken: null,
+    message: null,
+    loading: false,
+    error: false
 };
 
 export default function users(state = initialState, action) {
@@ -17,15 +20,13 @@ export default function users(state = initialState, action) {
                 ...state,
                 accessToken: action.accessToken,
                 message: action.message,
-                loading: false,
-                code: 1
             };
         case LOGIN_FAILURE:
             return {
                 ...state,
                 message: action.message,
                 loading: false,
-                code: 0
+                error: true
             };
         case FETCH_USER_START:
             return state;

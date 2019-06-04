@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import LoadingBar from 'react-redux-loading-bar';   
+import LoadingBar from 'react-redux-loading-bar';
 
 export class Header extends Component {
     static propTypes = {
@@ -23,7 +23,7 @@ export class Header extends Component {
     render() {
         return (
             <header className="bg-black">
-                {! this.props.hideToggle ? (
+                {this.props.hideToggle ? null : (
                     <div className="toggle-navigation">
                         <button className="btn-toggle" onClick={this.handleToggle}>
                             <span className="icon-bar"></span>
@@ -31,11 +31,11 @@ export class Header extends Component {
                             <span className="icon-bar"></span>
                         </button>
                     </div>
-                ) : null}
+                )}
                 <div className="head-logo">
                     <span>GENIX</span>
                 </div>
-                <LoadingBar style={{ backgroundColor: '#117EBF', height: '3px' }}/>
+                <LoadingBar style={{ backgroundColor: '#f94854', height: '3px' }}/>
             </header>
         )
     }

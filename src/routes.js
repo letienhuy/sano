@@ -41,7 +41,7 @@ export function MapRoutes(){
     return (
         <Switch>
             {
-                routes.public.map((route, key) => {
+                routes.private.map((route, key) => {
                     return <PrivateRoute
                         key={route.path}
                         exact
@@ -50,7 +50,7 @@ export function MapRoutes(){
                 })
             }
             {
-                routes.private.map((route, key) => {
+                routes.public.map((route, key) => {
                     return <Route
                         key={key}
                         exact
@@ -71,7 +71,7 @@ export function route(name, params = null) {
     if(route){
         path = route.path;
     }else{
-        throw 'Not route found with name: ' + name;
+        throw ('Not route found with name: ', name);
     }
     if(params && typeof params === "object"){
         Object.keys(params).filter((key) => {

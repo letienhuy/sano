@@ -8,9 +8,8 @@ export function login(name, password){
     }
 }
 
-export function fetchUser(accessToken){
+export function fetchUser(){
     return{
-        type: FETCH_USER_START,
-        accessToken
+        type: FETCH_USER_START
     }
 }

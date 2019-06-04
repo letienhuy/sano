@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { HashLoader } from 'react-spinners';
 
-export default class BtnLoading extends Component {
+export default class LoadingIcon extends Component {
     render() {
         return (
             <HashLoader

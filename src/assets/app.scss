@@ -885,15 +885,15 @@ header{
     cursor: pointer;
     &:hover{
         background-color: rgb(15, 103, 153);
-        &:after{
-            content: '';
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            right: 4px;
-            bottom: 4px;
-            border: 1px solid #fff;
-        }
+        // &:after{
+        //     content: '';
+        //     position: absolute;
+        //     top: 4px;
+        //     left: 4px;
+        //     right: 4px;
+        //     bottom: 4px;
+        //     border: 1px solid #fff;
+        // }
     }
     &:active{
         transform: translateY(1px);
@@ -1054,6 +1054,9 @@ header{
         margin: 10px 0;
         background-color: #fff;
         cursor: pointer;
+        &.with-border{
+            border-left: 2px solid $primaryColor;
+        }
         .title{
             margin: 0;
             margin-bottom: 5px;
@@ -1070,6 +1073,7 @@ header{
             white-space: nowrap;
             text-overflow: ellipsis;
             margin-bottom: 5px;
+            min-height: 20px;
         }
         .timeline{
             margin-top: 20px;
