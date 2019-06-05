@@ -2,10 +2,19 @@ import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer from './reducers/root.reducers';
 import rootSaga from './sagas/index';
+
 const sagaMiddleware = createSagaMiddleware();
+let initialUser = null;
+
+try{
+    initialUser = JSON.parse(atob(localStorage.getItem('user')));
+}catch(e){
+    localStorage.removeItem('user');
+    localStorage.removeItem('accessToken');
+}
 const initialState = {
     userReducer: {
-        user: localStorage.getItem('user') ? JSON.parse(atob(localStorage.getItem('user'))) : null,
+        user: initialUser,
         accessToken: localStorage.getItem('accessToken')
     }
 }

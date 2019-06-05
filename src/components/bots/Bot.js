@@ -3,10 +3,9 @@ import {connect} from 'react-redux';
 import Header from '../layouts/Header';
 import Sidebar from '../layouts/Sidebar';
 import {fetchBots} from '../../actions/bot.actions';
-import {BotItem} from './BotItem';
+import BotItem from './BotItem';
 import CreateBot from './CreateBot';
 import Modal from '../layouts/Modal';
-import cogoToast from 'cogo-toast';
 
 export class Bot extends Component {
     constructor(props) {
@@ -18,9 +17,6 @@ export class Bot extends Component {
 
     componentDidMount() {
         this.props.dispatch(fetchBots());
-        window.addEventListener('scroll', (e) => {
-            console.log(e);
-        });
     }
     handleLoadMore = () => {
         const { currentPage, totalPages } = this.props.bot;
@@ -28,7 +24,7 @@ export class Bot extends Component {
             this.props.dispatch(fetchBots(currentPage+1));
     }
     render() {
-        const { list, message, error } = this.props.bot;
+        const { list } = this.props.bot;
         return (
             <div>
                 <Header/>
@@ -41,7 +37,6 @@ export class Bot extends Component {
                         <span>
                             Quản lý các trợ lý ảo đã tạo, tạo trợ lý ảo mới
                         </span>
-                        <button className="btn" onClick={this.handleLoadMore}>Next</button>
                         <button className="btn" onClick={() => this.setState({isToggleCreate: true})}>Tạo bot mới</button>
                     </div>
                     <div className="grid-fluid">
@@ -49,7 +44,7 @@ export class Bot extends Component {
                             list.map((item, key) => {
                                 return (
                                     <div key={key} className="col-3">
-                                        <BotItem data={item}/>
+                                        <BotItem item={item}/>
                                     </div>
                                 )
                             })
@@ -61,7 +56,7 @@ export class Bot extends Component {
                     onClose={() => this.setState({isToggleCreate: false})}
                     title="Tạo bot mới
                 ">
-                    <CreateBot {...this.props}/>
+                    <CreateBot/>
                 </Modal>
             </div>
         )

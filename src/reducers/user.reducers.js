@@ -33,7 +33,7 @@ export default function users(state = initialState, action) {
         case FETCH_USER_SUCCESS:
             return {
                 ...state,
-                user: action
+                user: action.user
             }
         default:
             return state;

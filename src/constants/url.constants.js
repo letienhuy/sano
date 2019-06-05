@@ -7,3 +7,5 @@ export const FETCH_USER_URL = `${USER_URL}/me`;
 
 export const BOT_URL = `${API_URL}/bots`;
 export const FETCH_LIST_BOT = `${BOT_URL}/list`;
+export const FETCH_LIST_LANGUAGE = `${BOT_URL}/languages/list`;
+export const FETCH_LIST_TEMPLATE = `${BOT_URL}/templates/list`;

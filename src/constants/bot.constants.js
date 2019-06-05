@@ -1,3 +1,15 @@
 export const FETCH_LIST_BOT_START = "FETCH_LIST_BOT_START";
 export const FETCH_LIST_BOT_SUCCESS = "FETCH_LIST_BOT_SUCCESS";
 export const FETCH_LIST_BOT_FAILURE = "FETCH_LIST_BOT_FAILURE";
+export const CREATE_BOT_START = "CREATE_BOT_START";
+export const CREATE_BOT_SUCCESS = "CREATE_BOT_SUCCESS";
+export const CREATE_BOT_FAILURE = "CREATE_BOT_FAILURE";
+export const DELETE_BOT_START = "DELETE_BOT_START";
+export const DELETE_BOT_SUCCESS = "DELETE_BOT_SUCCESS";
+export const DELETE_BOT_FAILURE = "DELETE_BOT_FAILURE";
+
+export const BOT_TRAINING_STATUS = 1;
+export const BOT_DONE_STATUS = 0;
+export const BOT_NORMAL = 'normal';
+export const BOT_TEMPLATE = 'template';
+export const BOT_BUILTIN = 'builtin';

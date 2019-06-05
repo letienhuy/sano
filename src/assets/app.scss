@@ -783,6 +783,8 @@ header{
                 margin-bottom: 5px;
             }
             input{
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 15px;
                 min-width: 300px;
                 height: 35px;
                 border: 0;
@@ -833,6 +835,8 @@ header{
                 }
             }
             textarea{
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 15px;
                 min-width: 568px;
                 min-height: 200px;
                 padding: 10px 20px;
@@ -1076,7 +1080,6 @@ header{
             min-height: 20px;
         }
         .timeline{
-            margin-top: 20px;
             font-size: 13px;
             color: #777777;
         }
@@ -1112,6 +1115,7 @@ header{
             padding: 5px 20px;
             background-color: #fff;
             box-shadow: #777777 1px 1px 3px;
+            z-index: 1;
             & > span, & > a{
                 display: block;
                 font-size: 13px;
@@ -1166,6 +1170,17 @@ header{
                 margin-left: 90px;
             }
         }
+        .load-deleting{
+            display: flex;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgb(255, 255, 255);
+            align-items: center;
+            justify-content: center;
+        }
     }
 }
 .loading-fullscreen{
@@ -1178,20 +1193,29 @@ header{
     align-items: center;
     justify-content: center;
 }
-
-@keyframes side{
-    from{
-        transform: translateX(-100%);
-    }
-    to{
-        transform: translateX(0);
-    }
+.error{
+    display: block;
+    font-size: 13px;
+    color: #ff0000;
+    margin-top: 5px;
 }
-@keyframes hide{
-    from{
-        transform: translateX(0);
-    }
-    to{
-        transform: translateX(-100%);
-    }
+// Override react-select
+.css-w8afj7-Input > div > input{
+    height: 30px !important;
+    min-width: 150px !important;
+}
+.css-yk16xz-control{
+    border-radius: 0 !important;
+    border-color: #777777 !important;
+    background-color: transparent !important;
+}
+.css-1pahdxg-control{
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+.css-26l3q-menu{
+    border-radius: 0 !important;
+}
+.css-1ml51p6-MenuList{
+    border-radius: 0 !important;
 }

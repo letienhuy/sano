@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Redirect} from 'react-router-dom';
-import {Header} from '../layouts/Header';
+import { Redirect } from 'react-router-dom';
+import Header from '../layouts/Header';
 import { login } from '../../actions/user.actions';
-import LoadingIcon from '../layouts/LoadingIcon';
+import { HashLoader } from 'react-spinners';
 
 export class Login extends Component {
     static propTypes = {}
@@ -61,7 +61,12 @@ export class Login extends Component {
                                         <button className="btn login-btn">
                                             {
                                                 loading
-                                                    ? <LoadingIcon loading={loading}/>
+                                                    ? <HashLoader
+                                                            sizeUnit={"px"}
+                                                            size={20}
+                                                            color={'#ffffff'}
+                                                            loading={loading}
+                                                        />
                                                     : "Đăng nhập"
                                             }
                                         </button>

@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import store from './store';
 import './assets/app.scss';
 import './assets/fontawesome.min.css';
+import './helpers/helper';
 
 ReactDOM.render(
     <Provider store={store}>
