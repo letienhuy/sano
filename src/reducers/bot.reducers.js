@@ -1,20 +1,36 @@
-import {FETCH_LIST_BOT_START, FETCH_LIST_BOT_SUCCESS, FETCH_LIST_BOT_FAILURE, CREATE_BOT_START, CREATE_BOT_SUCCESS, CREATE_BOT_FAILURE, DELETE_BOT_SUCCESS, DELETE_BOT_FAILURE, DELETE_BOT_START} from '../constants/bot.constants';
+import {
+    FETCH_LIST_BOT_START,
+    FETCH_LIST_BOT_SUCCESS,
+    FETCH_LIST_BOT_FAILURE,
+    CREATE_BOT_START,
+    CREATE_BOT_SUCCESS,
+    CREATE_BOT_FAILURE,
+    DELETE_BOT_SUCCESS,
+    DELETE_BOT_FAILURE,
+    DELETE_BOT_START,
+    UPDATE_BOT_START,
+    UPDATE_BOT_SUCCESS,
+    UPDATE_BOT_FAILURE
+} from '../constants/bot.constants';
 
 const initialState = {
     list: [],
+    currentPage: 1,
+    totalPages: 1,
     deleteList: [],
     message: null,
-    error: false
+    created: false,
+    loading: false
 }
 
-export default function bots(state = initialState, action){
-    switch(action.type){
+export default function bots(state = initialState, action) {
+    switch (action.type) {
         case FETCH_LIST_BOT_START:
             return state;
         case FETCH_LIST_BOT_SUCCESS:
             return {
                 ...state,
-                list: [...state.list, ...action.data],
+                list: action.data,
                 currentPage: action.current_page,
                 totalPages: action.total_pages
             };
@@ -27,7 +43,11 @@ export default function bots(state = initialState, action){
             }
         case CREATE_BOT_SUCCESS:
             return {
-                list: [action.data, ...state.list],
+                ...state,
+                list: [
+                    action.data, ...state.list
+                ],
+                created: true,
                 loading: false
             }
         case CREATE_BOT_FAILURE:
@@ -35,23 +55,47 @@ export default function bots(state = initialState, action){
                 ...state,
                 loading: false
             }
+        case UPDATE_BOT_START:
+            return {
+                ...state,
+                loading: true
+            }
+        case UPDATE_BOT_SUCCESS:
+            let newList = state.list.filter(obj => obj._id !== action.data._id);
+            return {
+                ...state,
+                list: [action.data, ...newList],
+                loading: false
+            }
+        case UPDATE_BOT_FAILURE:
+            return {
+                ...state,
+                loading: false
+            }
         case DELETE_BOT_START:
             return {
                 ...state,
-                deleteList: [...state.deleteList, action.botId],
-                loading: true
+                deleteList: [
+                    ...state.deleteList,
+                    action.botId
+                ]
             }
         case DELETE_BOT_SUCCESS:
             return {
-                list: state.list.filter((obj) => obj._id !== action.botId),
-                deleteList: state.deleteList.filter((id) => id !== action.botId),
-                loading: false
+                ...state,
+                list: state
+                    .list
+                    .filter((obj) => obj._id !== action.botId),
+                deleteList: state
+                    .deleteList
+                    .filter((id) => id !== action.botId)
             }
         case DELETE_BOT_FAILURE:
             return {
                 ...state,
-                deleteList: state.deleteList.filter((id) => id !== action.botId),
-                loading: false
+                deleteList: state
+                    .deleteList
+                    .filter((id) => id !== action.botId)
             }
         default:
             return state;

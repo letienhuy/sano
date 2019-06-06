@@ -54,9 +54,9 @@ export async function createNewBot(data) {
     });
     return result;
 }
-export async function editBot(data) {
+export async function editBot(botId, data) {
     let accessToken = localStorage.getItem('accessToken');
-    const result = await axios.put(url.BOT_URL, data, {
+    const result = await axios.put(url.BOT_URL + '/' + botId, data, {
         headers: {
             "Authorization": `Bearer ${accessToken}`
         }

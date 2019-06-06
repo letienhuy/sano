@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import {BOT_BUILTIN, BOT_NORMAL, BOT_TEMPLATE} from '../../constants/bot.constants';
 import { Validation } from '../../helpers/helper';
 import Select from 'react-select';
-import { createNewBot } from '../../actions/bot.actions';
+import { createNewBot, editBot } from '../../actions/bot.actions';
 import { HashLoader } from 'react-spinners';
 
-export class CreateBot extends Component {
+export class EditBot extends Component {
     static propTypes = {
+        botItem: PropTypes.object.isRequired,
         listLanguages: PropTypes.array.isRequired,
         listBuiltIns: PropTypes.array.isRequired,
-        listTemplates: PropTypes.array.isRequired,
     }
     constructor(props) {
         super(props);
@@ -21,8 +21,7 @@ export class CreateBot extends Component {
                 description: null,
                 type: null,
                 language_id: null,
-                builtin_bot_id: null,
-                templateBotId: null
+                builtin_bot_id: null
             },
             typeOptions: [
                 {
@@ -31,40 +30,36 @@ export class CreateBot extends Component {
                 }
             ],
             languageOptions: [],
-            templateOptions: [],
-            buildInOptions: [],
+            builtInOptions: [],
             errors: null
         }
         this.validate = new Validation();
     }
 
     componentDidMount() {
-        
+        const { botItem, listLanguages, listBuiltIns } = this.props;
+        let languageOptions = [];
+        let builtInOptions = [];
+        listLanguages.map((opt) => 
+            languageOptions.push({
+                value: opt._id,
+                label: opt.name
+            })
+        );
+        listBuiltIns.map((opt) => 
+            builtInOptions.push({
+                value: opt._id,
+                label: opt.name
+            })
+        );
+        this.setState({bot: JSON.parse(JSON.stringify(botItem)), languageOptions, builtInOptions});
+        this.inputName.value = botItem.name;
+        this.inputDesc.value = botItem.description;
+        this.typeSelect.setState({value: this.state.typeOptions.filter((obj) => obj.value === botItem.type)});
+        this.languageSelect.setState({value: languageOptions.filter((obj) => obj.value === botItem.language_id)});
+        this.builtInSelect.setState({value: builtInOptions.filter((obj) => obj.value === botItem.builtin_bot_id)});
     }
-    componentWillReceiveProps(newProps){
-        const { listLanguages, listTemplates } = newProps;
-        const { created } = newProps.bot;
-        if(created){
-            this.clearFormData();
-        }
-        if(listLanguages.length && listTemplates.length){
-            let languageOptions = [];
-            let templateOptions = [];
-            listLanguages.map((opt) => 
-                languageOptions.push({
-                    value: opt._id,
-                    label: opt.name
-                })
-            );
-            listTemplates.map((opt) => 
-                templateOptions.push({
-                    value: opt._id,
-                    label: opt.name
-                })
-            );
-            this.setState({languageOptions, templateOptions});
-        }
-    }
+
     handleNameChange = () => {
         const { bot } = this.state;
         bot.name = this.inputName.value;
@@ -75,20 +70,15 @@ export class CreateBot extends Component {
         bot.description = this.inputDesc.value;
         this.setState({bot});
     }
-    handleTypeChange = (value) => {
-        const { bot } = this.state;
-        bot.type = value.value;
-        this.setState({bot});
-    }
     handleTemplateChange = (value) => {
         const { bot } = this.state;
         bot.templateBotId = value.value;
         this.setState({bot});
     }
     handleLanguageChange = (value) => {
-        let buildIn = this.props.listBuiltIns.filter((obj) => { return obj.language_id === value.value });
+        let builtIn = this.props.listBuiltIns.filter((obj) => { return obj.language_id === value.value });
         let options = [];
-        buildIn.map((item) => 
+        builtIn.map((item) => 
             options.push({
                 value: item._id,
                 label: item.name
@@ -97,13 +87,13 @@ export class CreateBot extends Component {
         const { bot } = this.state;
         bot.language_id = value.value;
         bot.builtin_bot_id = null;
-        this.buildInSelect.setState({value: null});
+        this.builtInSelect.setState({value: null});
         this.setState({
-            buildInOptions: options,
+            builtInOptions: options,
             bot: bot
         });
     }
-    handleBuildInChange = (value) => {
+    handleBuiltInChange = (value) => {
         const { bot } = this.state;
         bot.builtin_bot_id = value.value;
         this.setState({bot});
@@ -121,16 +111,7 @@ export class CreateBot extends Component {
             this.setState({errors});
             return;
         }
-        this.props.dispatch(createNewBot(bot));
-    }
-    clearFormData = () => {
-        this.setState({bot: { name: null, description: null, type: null, language_id: null, builtin_bot_id: null, templateBotId: null }});
-        this.inputName.value = "";
-        this.inputDesc.value = "";
-        this.typeSelect.setState({value: null});
-        this.templateSelect.setState({value: null});
-        this.languageSelect.setState({value: null});
-        this.buildInSelect.setState({value: null});
+        this.props.dispatch(editBot(bot));
     }
     render() {
         const { loading } = this.props.bot;
@@ -158,7 +139,7 @@ export class CreateBot extends Component {
                             <label>
                                 Mẫu
                             </label>
-                            <Select ref={el => this.templateSelect = el} options={this.state.templateOptions} onChange={this.handleTemplateChange}/>
+                            <Select isDisabled={true}/>
                         </div>
                     </div>
                     <div className="input-group d-flex">
@@ -173,7 +154,7 @@ export class CreateBot extends Component {
                             <label>
                                 Bot tham chiếu
                             </label>
-                            <Select ref={el => this.buildInSelect = el} options={this.state.buildInOptions} onChange={this.handleBuildInChange}/>
+                            <Select ref={el => this.builtInSelect = el} options={this.state.builtInOptions} onChange={this.handleBuiltInChange}/>
                         </div>
                     </div>
                     <div className="input-group">
@@ -183,7 +164,7 @@ export class CreateBot extends Component {
                                 size={20}
                                 color={'#ffffff'}
                                 loading={loading}/>
-                            : 'Tạo trợ lý ảo mới'}</button>
+                            : 'Lưu thay đổi'}</button>
                     </div>
                 </form>
             </div>
@@ -195,4 +176,4 @@ const mapStateToProps = (state) => ({
     bot: state.botReducer
 });
 
-export default connect(mapStateToProps)(CreateBot);
+export default connect(mapStateToProps)(EditBot);

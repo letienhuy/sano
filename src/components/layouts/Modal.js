@@ -1,23 +1,21 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import SimpleBar from 'simplebar-react';
 
 export class Modal extends Component {
     static propTypes = {
-        isToggle: PropTypes.bool,
-        onClose: PropTypes.func
+        isToggle: PropTypes.bool.isRequired,
+        onClose: PropTypes.func.isRequired
     }
-    
-    componentDidMount() {
-    }
-    
+
     handleClose = () => {
         this.props.onClose();
     }
     render() {
         const { isToggle, title, children } = this.props;
         return (
-            <section className={`modal-page ${isToggle ? 'show' : ''}`}>
+            <SimpleBar className={`modal-page ${isToggle ? 'show' : ''}`}>
                 <div className="modal-head">
                     <button className="btn-back" onClick={this.handleClose}>
                         <i className="fal fa-arrow-left"/>
@@ -35,7 +33,7 @@ export class Modal extends Component {
                     {children}
                     </div>
                 </div>
-            </section>
+            </SimpleBar>
 
         )
     }

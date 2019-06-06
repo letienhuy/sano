@@ -3,7 +3,7 @@ import * as API from '../helpers/API';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
 import toast from 'cogo-toast';
 import {LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILURE, FETCH_USER_START, FETCH_USER_SUCCESS} from '../constants/user.constants';
-import {FETCH_LIST_BOT_START, FETCH_LIST_BOT_SUCCESS, FETCH_LIST_BOT_FAILURE, CREATE_BOT_START, CREATE_BOT_SUCCESS, CREATE_BOT_FAILURE, DELETE_BOT_SUCCESS, DELETE_BOT_FAILURE, DELETE_BOT_START} from '../constants/bot.constants';
+import {FETCH_LIST_BOT_START, FETCH_LIST_BOT_SUCCESS, FETCH_LIST_BOT_FAILURE, CREATE_BOT_START, CREATE_BOT_SUCCESS, CREATE_BOT_FAILURE, DELETE_BOT_SUCCESS, DELETE_BOT_FAILURE, DELETE_BOT_START, UPDATE_BOT_START, UPDATE_BOT_FAILURE, UPDATE_BOT_SUCCESS} from '../constants/bot.constants';
 
 const delay = (ms) => new Promise(cb => setTimeout(cb, ms));
 
@@ -53,6 +53,8 @@ export function* authentication(action) {
     }
 }
 
+//Middleware with Bot
+
 export function* fetchingListBot(action){
     try{
         yield put(showLoading());
@@ -80,6 +82,18 @@ export function* createNewBot(action){
     }
 }
 
+export function* updateBot(action){
+    try{
+        const data = yield call(API.editBot, action.data._id, action.data);
+        yield put({type: UPDATE_BOT_SUCCESS, data: data.data.data});
+        yield toast.success(data.data.message, {position: "top-right"});
+    } catch (error){
+        if(error.response){
+            yield put({type: UPDATE_BOT_FAILURE});
+            yield toast.error(error.response.data.message, {position: "top-right"});
+        }
+    }
+}
 export function* deleteBot(action){
     try{
         const data = yield call(API.deleteBot, action.botId);
@@ -93,11 +107,15 @@ export function* deleteBot(action){
     }
 }
 
+//End middleware with Bot
+
+
 function* rootSaga() {
     yield takeEvery(LOGIN_START, authentication);
     yield takeEvery(FETCH_USER_START, fetchUser);
     yield takeEvery(FETCH_LIST_BOT_START, fetchingListBot);
     yield takeEvery(CREATE_BOT_START, createNewBot);
+    yield takeEvery(UPDATE_BOT_START, updateBot);
     yield takeEvery(DELETE_BOT_START, deleteBot);
 }
 

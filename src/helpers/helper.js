@@ -18,11 +18,19 @@ export class Validation{
             return <span className="error">{errors[name]}</span>;
     }
 }
+
 $(document).on('click', (event) => {
     let actionMenu = $('.action-menu');
     let btnAction = $('.btn-action');
+    let toggleNavigation = $('.toggle-navigation');
+    let sidebar = $('.sidebar');
     if(!actionMenu.is(event.target) && !btnAction.is(event.target)){
         actionMenu.removeClass('active');
+    }
+    if(!sidebar.is(event.target) && !toggleNavigation.is(event.target) && !toggleNavigation.children(event.target)){
+        console.log(event.target);
+        sidebar.removeClass('sidebar-active');
+        toggleNavigation.removeClass('toggled');
     }
 })
 

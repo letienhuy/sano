@@ -2,30 +2,23 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import LoadingBar from 'react-redux-loading-bar';
+import Confirm from './Confirm';
 
 export class Header extends Component {
     static propTypes = {
         className: PropTypes.string,
         hideToggle: PropTypes.bool,
     }
-    handleToggle = () => {
-        let parentToggle = document.querySelector('.toggle-navigation');
-        let sidebar = document.querySelector('.sidebar');
-        let toggledClass = parentToggle.classList.item(1);
-        if(toggledClass){
-            parentToggle.classList.remove('toggled');
-            sidebar.classList.remove('sidebar-active');
-        }else{
-            parentToggle.classList.add('toggled');
-            sidebar.classList.add('sidebar-active');
-        }
+    hanldeToggle = () => {
+        document.querySelector('.toggle-navigation').classList.toggle('toggled')
+        document.querySelector('.sidebar').classList.toggle('sidebar-active')
     }
     render() {
         return (
             <header className="bg-black">
                 {this.props.hideToggle ? null : (
                     <div className="toggle-navigation">
-                        <button className="btn-toggle" onClick={this.handleToggle}>
+                        <button className="btn-toggle" onClick={this.hanldeToggle}>
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
@@ -36,6 +29,7 @@ export class Header extends Component {
                     <span>GENIX</span>
                 </div>
                 <LoadingBar style={{ backgroundColor: '#f94854', height: '3px' }}/>
+                <Confirm/>
             </header>
         )
     }

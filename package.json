@@ -16,9 +16,11 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.1",
     "react-select": "^3.0.4",
+    "react-skeleton-loader": "^1.0.4",
     "react-spinners": "^0.5.4",
     "redux": "^4.0.1",
     "redux-saga": "^1.0.2",
+    "simplebar-react": "^1.0.0",
     "socket.io-client": "^2.2.0"
   },
   "scripts": {

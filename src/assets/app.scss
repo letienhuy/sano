@@ -68,8 +68,8 @@ header{
         .btn-toggle{
             display: flex;
             flex-direction: column;
-            width: 30px;
-            height: 30px;
+            width: 100%;
+            height: 100%;
             background-color: transparent;
             border: 0;
             align-items: center;
@@ -431,13 +431,13 @@ header{
     top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
     min-height: 100%;
     background-color: $secondColor;
     transition: all .4s ease-in-out;
     transform: translateY(100%);
     z-index: 10;
     &.show{
-        position: absolute;
         transform: translateY(0);
     }
     .modal{
@@ -889,15 +889,6 @@ header{
     cursor: pointer;
     &:hover{
         background-color: rgb(15, 103, 153);
-        // &:after{
-        //     content: '';
-        //     position: absolute;
-        //     top: 4px;
-        //     left: 4px;
-        //     right: 4px;
-        //     bottom: 4px;
-        //     border: 1px solid #fff;
-        // }
     }
     &:active{
         transform: translateY(1px);
@@ -1039,7 +1030,6 @@ header{
 .grid-fluid{
     display: flex;
     width: 100%;
-    max-width: 1460px;
     padding: 0 15px;
     flex-wrap: wrap;
     flex-direction: row;
@@ -1060,6 +1050,10 @@ header{
         cursor: pointer;
         &.with-border{
             border-left: 2px solid $primaryColor;
+        }
+        hr{
+            border: 0;
+            border-bottom: 1px solid #eeeeee;
         }
         .title{
             margin: 0;
@@ -1112,7 +1106,7 @@ header{
             display: none;
             top: 35px;
             right: -10px;
-            padding: 5px 20px;
+            padding: 5px;
             background-color: #fff;
             box-shadow: #777777 1px 1px 3px;
             z-index: 1;
@@ -1121,8 +1115,12 @@ header{
                 font-size: 13px;
                 color: #000000;
                 margin-bottom: 5px;
+                padding: 5px 20px;
                 line-height: 20px;
                 cursor: pointer;
+                &:hover{
+                    background-color: #eeeeee;
+                }
             }
             &.active{
                 display: block;
@@ -1199,6 +1197,89 @@ header{
     color: #ff0000;
     margin-top: 5px;
 }
+
+.confirm-component{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    .confirm{
+        &-wrap{
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #00000050;
+            .confirm{
+                &-container{
+                    position: absolute;
+                    width: calc(100% - 20px);
+                    top: 0;
+                    opacity: 0;
+                    left: 50%;
+                    max-width: 500px;
+                    padding: 50px 10px 10px 10px;
+                    background-color: #fff;
+                    transform: translate(-50%, -50%);
+                    transition: all .2s;
+                    &.active{
+                        top: 50%;
+                        opacity: 1;
+                    }
+                    .confirm{
+                        &-title{
+                            position: absolute;
+                            height: 50px;
+                            padding: 10px 50px;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            text-align: center;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            font-size: 18px;
+                            line-height: 30px;
+                            font-weight: bold;
+                            color: #000000;
+                        }
+                        &-close{
+                            position: absolute;
+                            top: 5px;
+                            right: 5px;
+                            @extend .close;
+                        }
+                        &-text{
+                            padding: 10px;
+                            display: block;
+                            color: #000000;
+                            line-height: 25px;
+                            text-align: center;
+                        }
+                        &-button{
+                            display: flex;
+                            flex-wrap: wrap;
+                            margin-top: 10px;
+                            align-items: center;
+                            justify-content: center;
+                            &_item{
+                                button{
+                                    @extend .btn;
+                                    margin: 5px 10px;
+                                    padding: 10px 30px;
+                                    border: 0;
+                                    background-color: $primaryColor;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 // Override react-select
 .css-w8afj7-Input > div > input{
     height: 30px !important;
@@ -1218,4 +1299,8 @@ header{
 }
 .css-1ml51p6-MenuList{
     border-radius: 0 !important;
+}
+//Override simplebar
+.simplebar-content-wrapper{
+    height: 100% !important;
 }
