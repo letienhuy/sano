@@ -10,14 +10,19 @@ import {
     DELETE_BOT_START,
     UPDATE_BOT_START,
     UPDATE_BOT_SUCCESS,
-    UPDATE_BOT_FAILURE
+    UPDATE_BOT_FAILURE,
+    CLONE_BOT_START,
+    CLONE_BOT_SUCCESS,
+    CLONE_BOT_FAILURE
 } from '../constants/bot.constants';
 
 const initialState = {
+    selectedBot: null,
     list: [],
     currentPage: 1,
     totalPages: 1,
     deleteList: [],
+    cloneList: [],
     message: null,
     created: false,
     loading: false
@@ -55,16 +60,31 @@ export default function bots(state = initialState, action) {
                 ...state,
                 loading: false
             }
+        case CLONE_BOT_START:
+            return {
+                ...state,
+                cloneList: [action.botId, ...state.cloneList]
+            }
+        case CLONE_BOT_SUCCESS:
+            state.cloneList.shift();
+            return {
+                ...state,
+                list: [action.data, ...state.list],
+            }
+        case CLONE_BOT_FAILURE:
+            state.cloneList.shift();
+            return {
+                ...state
+            }
         case UPDATE_BOT_START:
             return {
                 ...state,
                 loading: true
             }
         case UPDATE_BOT_SUCCESS:
-            let newList = state.list.filter(obj => obj._id !== action.data._id);
             return {
                 ...state,
-                list: [action.data, ...newList],
+                list: [action.data, ...state.list.filter(obj => obj._id !== action.data._id)],
                 loading: false
             }
         case UPDATE_BOT_FAILURE:

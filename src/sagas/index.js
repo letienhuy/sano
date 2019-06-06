@@ -3,7 +3,7 @@ import * as API from '../helpers/API';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
 import toast from 'cogo-toast';
 import {LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILURE, FETCH_USER_START, FETCH_USER_SUCCESS} from '../constants/user.constants';
-import {FETCH_LIST_BOT_START, FETCH_LIST_BOT_SUCCESS, FETCH_LIST_BOT_FAILURE, CREATE_BOT_START, CREATE_BOT_SUCCESS, CREATE_BOT_FAILURE, DELETE_BOT_SUCCESS, DELETE_BOT_FAILURE, DELETE_BOT_START, UPDATE_BOT_START, UPDATE_BOT_FAILURE, UPDATE_BOT_SUCCESS} from '../constants/bot.constants';
+import {FETCH_LIST_BOT_START, FETCH_LIST_BOT_SUCCESS, FETCH_LIST_BOT_FAILURE, CREATE_BOT_START, CREATE_BOT_SUCCESS, CREATE_BOT_FAILURE, DELETE_BOT_SUCCESS, DELETE_BOT_FAILURE, DELETE_BOT_START, UPDATE_BOT_START, UPDATE_BOT_FAILURE, UPDATE_BOT_SUCCESS, CLONE_BOT_START, CLONE_BOT_SUCCESS, CLONE_BOT_FAILURE} from '../constants/bot.constants';
 
 const delay = (ms) => new Promise(cb => setTimeout(cb, ms));
 
@@ -82,6 +82,19 @@ export function* createNewBot(action){
     }
 }
 
+export function* cloneBot(action){
+    try{
+        const data = yield call(API.cloneBot, action.botId);
+        yield put({type: CLONE_BOT_SUCCESS, data: data.data.data, botId: action.botId});
+        yield toast.success(data.data.message, {position: "top-right"});
+    } catch (error){
+        if(error.response){
+            yield put({type: CLONE_BOT_FAILURE, botId: action.botId});
+            yield toast.error(error.response.data.message, {position: "top-right"});
+        }
+    }
+}
+
 export function* updateBot(action){
     try{
         const data = yield call(API.editBot, action.data._id, action.data);
@@ -115,6 +128,7 @@ function* rootSaga() {
     yield takeEvery(FETCH_USER_START, fetchUser);
     yield takeEvery(FETCH_LIST_BOT_START, fetchingListBot);
     yield takeEvery(CREATE_BOT_START, createNewBot);
+    yield takeEvery(CLONE_BOT_START, cloneBot);
     yield takeEvery(UPDATE_BOT_START, updateBot);
     yield takeEvery(DELETE_BOT_START, deleteBot);
 }

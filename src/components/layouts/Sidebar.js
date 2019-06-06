@@ -34,7 +34,8 @@ export class Sidebar extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    auth: state.userReducer
+    auth: state.userReducer,
+    bot: state.botReducer,
 });
 
 export default withRouter(connect(mapStateToProps)(Sidebar));

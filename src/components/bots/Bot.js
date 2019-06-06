@@ -9,6 +9,8 @@ import CreateBot from './CreateBot';
 import EditBot from './EditBot';
 import Modal from '../layouts/Modal';
 import {BOT_TEMPLATE, BOT_BUILTIN} from '../../constants/bot.constants';
+import Skeleton from 'react-skeleton-loader';
+import Scroll from 'simplebar-react';
 
 export class Bot extends Component {
     constructor(props) {
@@ -24,44 +26,38 @@ export class Bot extends Component {
     }
 
     componentDidMount() {
-        const {list} = this.props.bot;
+        const { list } = this.props.bot;
         if (!list.length) 
-            this
-                .props
-                .dispatch(fetchBots());
+            this.props.dispatch(fetchBots());
         this.fetchSomeData();
     }
     fetchSomeData = () => {
-        API
-            .fetchListLanguage()
+        API.fetchListLanguage()
             .then((data) => {
                 this.setState({listLanguages: data.data.data});
             });
-        API
-            .fetchListTemplate(BOT_TEMPLATE)
+        API.fetchListTemplate(BOT_TEMPLATE)
             .then((data) => {
                 this.setState({listTemplates: data.data.data});
             });
-        API
-            .fetchListTemplate(BOT_BUILTIN)
+        API.fetchListTemplate(BOT_BUILTIN)
             .then((data) => {
                 this.setState({listBuiltIns: data.data.data})
             });
     }
+    
     handleLoadMore = () => {
         const {currentPage, totalPages} = this.props.bot;
         if (currentPage < totalPages) 
-            this
-                .props
-                .dispatch(fetchBots(currentPage + 1));
+            this.props.dispatch(fetchBots(currentPage + 1));
         }
     render() {
-        const {list} = this.props.bot;
+        const { list, cloneList } = this.props.bot;
         return (
             <div>
                 <Header/>
                 <Sidebar/>
-                <section className="container">
+                <Scroll className="container">
                     <div className="description">
                         <h1>
                             Quản lý trợ lý ảo GeniX
@@ -72,6 +68,22 @@ export class Bot extends Component {
                         <button className="btn" onClick={() => this.setState({isToggle: true})}>Tạo bot mới</button>
                     </div>
                     <div className="grid-fluid">
+                        {
+                            cloneList.map((item, key) => {
+                                return(
+                                    <div className="col-3" key={key}>
+                                        <div className="grid-item with-border">
+                                            <Skeleton borderRadius={0} width="100%" height="25px"/>
+                                            <Skeleton borderRadius={0} width="100%"/>
+                                            <Skeleton borderRadius={0} width="130px" height="15px"/>
+                                            <hr/>
+                                            <Skeleton borderRadius={0} width="100%" height="15px"/>
+                                            <Skeleton borderRadius={0} width="100%" height="15px"/>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
                         {
                             list.map((item, key) => {
                                 return (
@@ -84,7 +96,7 @@ export class Bot extends Component {
                             })
                         }
                     </div>
-                </section>
+                </Scroll>
                 <Modal
                     isToggle={this.state.isToggle}
                     onClose={() => this.setState({isToggle: false})}

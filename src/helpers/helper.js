@@ -28,7 +28,6 @@ $(document).on('click', (event) => {
         actionMenu.removeClass('active');
     }
     if(!sidebar.is(event.target) && !toggleNavigation.is(event.target) && !toggleNavigation.children(event.target)){
-        console.log(event.target);
         sidebar.removeClass('sidebar-active');
         toggleNavigation.removeClass('toggled');
     }

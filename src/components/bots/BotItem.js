@@ -1,62 +1,42 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deleteBot } from '../../actions/bot.actions';
+import { deleteBot, cloneBot } from '../../actions/bot.actions';
 import { HashLoader } from 'react-spinners';
 import Skeleton from 'react-skeleton-loader';
 import { showConfirm } from '../layouts/Confirm';
+import { BOT_SKELETON_STOP } from '../../constants/bot.constants';
 
 export class BotItem extends Component {
     static propTypes = {
         item: PropTypes.object.isRequired
     }
-    constructor(props) {
-        super(props);
-        this.state = {
-            skeleton: true
-        }
-    }
-    
-    componentDidMount() {
-        setTimeout(() => {
-            this.setState({skeleton: false});
-        }, 500);
-    }
-    
 
     handleDelete = () => {
-        const bot = this.props.item;
-        this.props.dispatch(showConfirm({
+        const { item , dispatch } = this.props;
+        dispatch(showConfirm({
             title: "Xoá trợ lý ảo",
-            message: <div>Xác nhận xoá trợ lý ảo <b>{bot.name}</b></div>,
+            message: <div>Xác nhận xoá trợ lý ảo <b>{item.name}</b></div>,
             buttons: [
                 {
                     title: "Xoá",
                     style: {backgroundColor: '#ff0000'},
-                    onClick: () => this.props.dispatch(deleteBot(bot._id))
+                    onClick: () => dispatch(deleteBot(item._id))
                 },
                 {
                     title: "Huỷ"
                 }
             ]
         }));
-        //this.props.dispatch(deleteBot(botId));
+    }
+
+    handleClone = () => {
+        const { item, dispatch } = this.props;
+        dispatch(cloneBot(item._id));
     }
     render() {
-        const { skeleton } = this.state;
         const { _id, name, description, created_at, language, updated_at} = this.props.item;
-        const { loading , deleteList } = this.props.bot;
-        if(skeleton)
-            return(
-                <div className="grid-item with-border">
-                    <Skeleton borderRadius={0} width="100%" height="25px"/>
-                    <Skeleton borderRadius={0} width="100%"/>
-                    <Skeleton borderRadius={0} width="130px" height="15px"/>
-                    <hr/>
-                    <Skeleton borderRadius={0} width="100%" height="15px"/>
-                    <Skeleton borderRadius={0} width="100%" height="15px"/>
-                </div>
-            )
+        const { deleteList } = this.props.bot;
         return (
             <div className="grid-item with-border">
                 {deleteList.find((id) => id === _id) ? 
@@ -65,23 +45,24 @@ export class BotItem extends Component {
                             sizeUnit={"px"}
                             size={30}
                             color={'#117EBF'}
-                            loading={loading}
+                            loading={true}
                         />
                     </div> : null}
-                <h2 className="title">{name}</h2>
-                <span className="description">{description}</span>
-                <div className="timeline"><b>Ngôn ngữ:</b> <span>{language ? language.name : 'Mặc định'}</span></div>
+                <h2 className="grid-item_title">{name}</h2>
+                <span className="grid-item_description">{description}</span>
+                <div className="grid-item_timeline"><b>Ngôn ngữ:</b> <span>{language ? language.name : 'Mặc định'}</span></div>
                 <hr/>
-                <div className="timeline"><b>Updated: </b><span>{updated_at}</span></div>
-                <div className="timeline"><b>Created: </b><span>{created_at}</span></div>
+                <div className="grid-item_timeline"><b>Updated: </b><span>{updated_at}</span></div>
+                <div className="grid-item_timeline"><b>Created: </b><span>{created_at}</span></div>
                 <button className="btn-action">
                     <span className="icon-bar"></span>
                     <span className="icon-bar"></span>
                     <span className="icon-bar"></span>
                 </button>
                 <div className="action-menu show">
-                    <span onClick={() => this.props.onEdit()}>Sửa</span>
-                    <span className="color-red" onClick={this.handleDelete}>Xoá</span>
+                    <span onClick={this.handleClone}><i className="fal fa-clone"></i> Sao chép</span>
+                    <span onClick={() => this.props.onEdit()}><i className="fal fa-pen"></i> Sửa</span>
+                    <span className="color-red" onClick={this.handleDelete}><i className="fal fa-trash"></i> Xoá</span>
                 </div>
             </div>
         )

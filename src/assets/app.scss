@@ -87,6 +87,11 @@ header{
     }
 }
 .container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     min-width: 330px;
     margin-top: 50px;
     .login{
@@ -136,7 +141,7 @@ header{
             }
         }
     }
-    & > .description{
+    .description{
         display: flex;
         height: 150px;
         background-color: #fff;
@@ -158,12 +163,12 @@ header{
             width: 150px;
         }
     }
-    & > .description-alt{
+    .description-alt{
         min-height: 50px;
         background-color: #eee;
         padding: 5px 20px;
     }
-    & > .breadcrum{
+    .breadcrum{
         height: 50px;
         background-color: #fff;
         box-shadow: #ddd 1px 0 3px;
@@ -1047,6 +1052,7 @@ header{
         padding: 10px;
         margin: 10px 0;
         background-color: #fff;
+        transition: all 1s;
         cursor: pointer;
         &.with-border{
             border-left: 2px solid $primaryColor;
@@ -1055,7 +1061,7 @@ header{
             border: 0;
             border-bottom: 1px solid #eeeeee;
         }
-        .title{
+        &_title{
             margin: 0;
             margin-bottom: 5px;
             font-size: 20px;
@@ -1063,7 +1069,7 @@ header{
             white-space: nowrap;
             text-overflow: ellipsis;
         }
-        .description{
+        &_description{
             display: block;
             color: #777777;
             font-style: italic;
@@ -1073,11 +1079,11 @@ header{
             margin-bottom: 5px;
             min-height: 20px;
         }
-        .timeline{
+        &_timeline{
             font-size: 13px;
             color: #777777;
         }
-        .btn-action{
+        & > .btn-action{
             position: absolute;
             display: flex;
             width: 10px;
@@ -1101,7 +1107,7 @@ header{
                 pointer-events: none;
             }
         }
-        .action-menu{
+        & > .action-menu{
             position: absolute;
             display: none;
             top: 35px;
@@ -1178,6 +1184,7 @@ header{
             background: rgb(255, 255, 255);
             align-items: center;
             justify-content: center;
+            z-index: 1;
         }
     }
 }

@@ -54,6 +54,15 @@ export async function createNewBot(data) {
     });
     return result;
 }
+export async function cloneBot(botId) {
+    let accessToken = localStorage.getItem('accessToken');
+    const result = await axios.get(url.BOT_URL + '/' + botId + '/clone', {
+        headers: {
+            "Authorization": `Bearer ${accessToken}`
+        }
+    });
+    return result;
+}
 export async function editBot(botId, data) {
     let accessToken = localStorage.getItem('accessToken');
     const result = await axios.put(url.BOT_URL + '/' + botId, data, {
