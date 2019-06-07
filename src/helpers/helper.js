@@ -19,7 +19,7 @@ export class Validation{
     }
 }
 
-$(document).on('click', (event) => {
+$(document).on('click', '.container', (event) => {
     let actionMenu = $('.action-menu');
     let btnAction = $('.btn-action');
     let toggleNavigation = $('.toggle-navigation');
@@ -27,7 +27,7 @@ $(document).on('click', (event) => {
     if(!actionMenu.is(event.target) && !btnAction.is(event.target)){
         actionMenu.removeClass('active');
     }
-    if(!sidebar.is(event.target) && !toggleNavigation.is(event.target) && !toggleNavigation.children(event.target)){
+    if(!sidebar.is(event.target)){
         sidebar.removeClass('sidebar-active');
         toggleNavigation.removeClass('toggled');
     }

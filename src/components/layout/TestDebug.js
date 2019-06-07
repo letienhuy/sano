@@ -10,7 +10,6 @@ export class TestDebug extends Component {
     componentDidMount() {
         const { selectedBot } = this.props.bot;
         if(selectedBot){
-            console.log(selectedBot);
         }
     }
     
