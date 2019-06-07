@@ -16,7 +16,7 @@ export async function fetchUser(accessToken = null) {
     return result;
 }
 
-export async function fetchBots(page) {
+export async function fetchBots(page = 1) {
     let accessToken = localStorage.getItem('accessToken');
     const result = await axios.get(url.FETCH_LIST_BOT + '/'+page, {
         headers: {

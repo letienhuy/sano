@@ -1,6 +1,6 @@
 import { FETCH_LIST_BOT_START, CREATE_BOT_START, DELETE_BOT_START, UPDATE_BOT_START, CLONE_BOT_START, SELECTED_BOT } from '../constants/bot.constants';
 
-export function fetchBots(page = 1){
+export function fetchBots(page){
     return{
         type: FETCH_LIST_BOT_START,
         page

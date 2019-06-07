@@ -1,19 +1,37 @@
-import { takeEvery, put, call } from 'redux-saga/effects';
+import {takeEvery, put, call, all} from 'redux-saga/effects';
 import * as API from '../helpers/API';
-import { showLoading, hideLoading } from 'react-redux-loading-bar';
+import {showLoading, hideLoading} from 'react-redux-loading-bar';
 import toast from 'cogo-toast';
 import {LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILURE, FETCH_USER_START, FETCH_USER_SUCCESS} from '../constants/user.constants';
-import {FETCH_LIST_BOT_START, FETCH_LIST_BOT_SUCCESS, FETCH_LIST_BOT_FAILURE, CREATE_BOT_START, CREATE_BOT_SUCCESS, CREATE_BOT_FAILURE, DELETE_BOT_SUCCESS, DELETE_BOT_FAILURE, DELETE_BOT_START, UPDATE_BOT_START, UPDATE_BOT_FAILURE, UPDATE_BOT_SUCCESS, CLONE_BOT_START, CLONE_BOT_SUCCESS, CLONE_BOT_FAILURE, SELECTED_BOT} from '../constants/bot.constants';
-
+import {
+    FETCH_LIST_BOT_START,
+    FETCH_LIST_BOT_SUCCESS,
+    FETCH_LIST_BOT_FAILURE,
+    CREATE_BOT_START,
+    CREATE_BOT_SUCCESS,
+    CREATE_BOT_FAILURE,
+    DELETE_BOT_SUCCESS,
+    DELETE_BOT_FAILURE,
+    DELETE_BOT_START,
+    UPDATE_BOT_START,
+    UPDATE_BOT_FAILURE,
+    UPDATE_BOT_SUCCESS,
+    CLONE_BOT_START,
+    CLONE_BOT_SUCCESS,
+    CLONE_BOT_FAILURE,
+    SELECTED_BOT,
+    BOT_TEMPLATE,
+    BOT_BUILTIN
+} from '../constants/bot.constants'
 const delay = (ms) => new Promise(cb => setTimeout(cb, ms));
 
 export function* fetchUser(action) {
     try {
-        const data = yield call(API.fetchUser, action.access_token);
-        localStorage.setItem('user', btoa(escape(JSON.stringify(data.data.data))));
+        const response = yield call(API.fetchUser, action.access_token);
+        localStorage.setItem('user', btoa(escape(JSON.stringify(response.data.data))));
         yield put({
             type: FETCH_USER_SUCCESS,
-            user: data.data.data
+            user: response.data.data
         });
     } catch (error) {
         localStorage.clear();
@@ -23,16 +41,16 @@ export function* fetchUser(action) {
 export function* authentication(action) {
     try {
         yield put(showLoading());
-        const data = yield call(API.postLogin, action.name, action.password);
-        const user = yield call(API.fetchUser, data.data.access_token);
-        localStorage.setItem("accessToken", data.data.access_token);
+        const response = yield call(API.postLogin, action.name, action.password);
+        const user = yield call(API.fetchUser, response.data.access_token);
+        localStorage.setItem("accessToken", response.data.access_token);
         localStorage.setItem('user', btoa(escape(JSON.stringify(user.data.data))));
         yield put({
             type: FETCH_USER_SUCCESS,
             user: user.data.data
         });
         yield put(
-            {type: LOGIN_SUCCESS, accessToken: data.data.access_token, message: data.data.message}
+            {type: LOGIN_SUCCESS, accessToken: response.data.access_token, message: response.data.message}
         );
     } catch (error) {
        if(error.response){
@@ -57,10 +75,22 @@ export function* authentication(action) {
 export function* fetchingListBot(action){
     try{
         yield put(showLoading());
-        const data = yield call(API.fetchBots, action.page);
-        yield put({type: FETCH_LIST_BOT_SUCCESS, data: data.data.data});
+        const [ response, listLanguages , listTemplates, listBuiltIns] = yield all([
+            call(API.fetchBots, action.page),
+            call(API.fetchListLanguage),
+            call(API.fetchListTemplate, BOT_TEMPLATE),
+            call(API.fetchListTemplate, BOT_BUILTIN)
+        ]);
+        yield put({
+            type: FETCH_LIST_BOT_SUCCESS, 
+            ...response.data,
+            listLanguages: listLanguages.data.data,
+            listTemplates: listTemplates.data.data,
+            listBuiltIns: listBuiltIns.data.data
+        });
     } catch (error){
         if(error.response){
+            yield put({type: FETCH_LIST_BOT_FAILURE});
             yield toast.error("Tải danh sách trợ lý ảo thất bại", {position: "top-right"});
         }
     } finally {
@@ -70,9 +100,9 @@ export function* fetchingListBot(action){
 
 export function* createNewBot(action){
     try{
-        const data = yield call(API.createNewBot, action.data);
-        yield put({type: CREATE_BOT_SUCCESS, data: data.data.data});
-        yield toast.success(data.data.message, {position: "top-right"});
+        const response = yield call(API.createNewBot, action.data);
+        yield put({type: CREATE_BOT_SUCCESS, data: response.data.data});
+        yield toast.success(response.data.message, {position: "top-right"});
     } catch (error){
         if(error.response){
             yield put({type: CREATE_BOT_FAILURE});
@@ -83,9 +113,9 @@ export function* createNewBot(action){
 
 export function* cloneBot(action){
     try{
-        const data = yield call(API.cloneBot, action.botId);
-        yield put({type: CLONE_BOT_SUCCESS, data: data.data.data, botId: action.botId});
-        yield toast.success(data.data.message, {position: "top-right"});
+        const response = yield call(API.cloneBot, action.botId);
+        yield put({type: CLONE_BOT_SUCCESS, data: response.data.data, botId: action.botId});
+        yield toast.success(response.data.message, {position: "top-right"});
     } catch (error){
         if(error.response){
             yield put({type: CLONE_BOT_FAILURE, botId: action.botId});
@@ -96,9 +126,9 @@ export function* cloneBot(action){
 
 export function* updateBot(action){
     try{
-        const data = yield call(API.editBot, action.data._id, action.data);
-        yield put({type: UPDATE_BOT_SUCCESS, data: data.data.data});
-        yield toast.success(data.data.message, {position: "top-right"});
+        const response = yield call(API.editBot, action.data._id, action.data);
+        yield put({type: UPDATE_BOT_SUCCESS, data: response.data.data});
+        yield toast.success(response.data.message, {position: "top-right"});
     } catch (error){
         if(error.response){
             yield put({type: UPDATE_BOT_FAILURE});
@@ -108,9 +138,9 @@ export function* updateBot(action){
 }
 export function* deleteBot(action){
     try{
-        const data = yield call(API.deleteBot, action.botId);
+        const response = yield call(API.deleteBot, action.botId);
         yield put({type: DELETE_BOT_SUCCESS, botId: action.botId});
-        yield toast.success(data.data.message, {position: "top-right"});
+        yield toast.success(response.data.message, {position: "top-right"});
     } catch (error){
         if(error.response){
             yield put({type: DELETE_BOT_FAILURE});
@@ -120,7 +150,7 @@ export function* deleteBot(action){
 }
 
 export function* saveSelectedBot(action){
-    localStorage.setItem('bsel', btoa(escape(JSON.stringify(action.data))));
+    yield localStorage.setItem('bsel', btoa(escape(JSON.stringify(action.data))));
 }
 
 //End middleware with Bot

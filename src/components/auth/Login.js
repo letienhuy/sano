@@ -1,15 +1,12 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Header from '../layout/Header';
+import { route } from '../../routes';
 import { login } from '../../actions/user.actions';
 import { HashLoader } from 'react-spinners';
 
 export class Login extends Component {
-    static propTypes = {}
-    componentDidMount() {}
-
     handleSubmit = (event) => {
         event.preventDefault();
         const {dispatch} = this.props;
@@ -18,7 +15,7 @@ export class Login extends Component {
     render() {
         const {user, accessToken, loading, message, error} = this.props.auth;
         if (user && accessToken) {
-            return <Redirect to="/"/>
+            return <Redirect to={route('home')}/>
         }
         return (
             <div>

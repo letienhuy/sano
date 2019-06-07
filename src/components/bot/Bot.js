@@ -3,47 +3,29 @@ import {connect} from 'react-redux';
 import Header from '../layout/Header';
 import Sidebar from '../layout/sidebar/Sidebar';
 import {fetchBots} from '../../actions/bot.actions';
-import * as API from '../../helpers/API';
 import BotItem from './BotItem';
 import CreateBot from './CreateBot';
 import EditBot from './EditBot';
 import Modal from '../layout/Modal';
-import {BOT_TEMPLATE, BOT_BUILTIN} from '../../constants/bot.constants';
 import Skeleton from 'react-skeleton-loader';
+import {isEmpty} from 'lodash';
 import Scroll from 'simplebar-react';
 
 export class Bot extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isToggle: false,
+            isToggleCreate: false,
             isToggleEdit: false,
-            botItem: null,
-            listLanguages: [],
-            listTemplates: [],
-            listBuiltIns: []
+            botItem: null
         }
     }
 
     componentDidMount() {
         const { list } = this.props.bot;
-        if (!list.length) 
+        if (isEmpty(list)){
             this.props.dispatch(fetchBots());
-        this.fetchSomeData();
-    }
-    fetchSomeData = () => {
-        API.fetchListLanguage()
-            .then((data) => {
-                this.setState({listLanguages: data.data.data});
-            });
-        API.fetchListTemplate(BOT_TEMPLATE)
-            .then((data) => {
-                this.setState({listTemplates: data.data.data});
-            });
-        API.fetchListTemplate(BOT_BUILTIN)
-            .then((data) => {
-                this.setState({listBuiltIns: data.data.data})
-            });
+        }
     }
     
     handleLoadMore = () => {
@@ -52,7 +34,8 @@ export class Bot extends Component {
             this.props.dispatch(fetchBots(currentPage + 1));
         }
     render() {
-        const { list, cloneList } = this.props.bot;
+        const { list, cloneList, listBuiltIns, listLanguages, listTemplates } = this.props.bot;
+        const { isToggleCreate, isToggleEdit, botItem } = this.state;
         return (
             <div>
                 <Header/>
@@ -65,7 +48,7 @@ export class Bot extends Component {
                         <span>
                             Quản lý các trợ lý ảo đã tạo, tạo trợ lý ảo mới
                         </span>
-                        <button className="btn" onClick={() => this.setState({isToggle: true})}>Tạo bot mới</button>
+                        <button className="btn" onClick={() => this.setState({isToggleCreate: true})}>Tạo bot mới</button>
                     </div>
                     <div className="grid-fluid">
                         {
@@ -98,24 +81,24 @@ export class Bot extends Component {
                     </div>
                 </Scroll>
                 <Modal
-                    isToggle={this.state.isToggle}
-                    onClose={() => this.setState({isToggle: false})}
+                    isToggle={isToggleCreate}
+                    onClose={() => this.setState({isToggleCreate: false})}
                     title="Tạo trợ lý ảo mới">
                     <CreateBot
-                        listLanguages={this.state.listLanguages}
-                        listBuiltIns={this.state.listBuiltIns}
-                        listTemplates={this.state.listTemplates}/>
+                        listLanguages={listLanguages}
+                        listBuiltIns={listBuiltIns}
+                        listTemplates={listTemplates}/>
                 </Modal>
                 <Modal
-                    isToggle={this.state.isToggleEdit}
+                    isToggle={isToggleEdit}
                     onClose={() => this.setState({isToggleEdit: false, botItem: null})}
-                    title="Cập nhật trợ lý ảo">
+                    title={botItem ? "Sửa " + botItem.name  : "Cập nhật trợ lý ảo"}>
                     {
-                        this.state.botItem
+                        botItem
                             ? <EditBot
-                                    botItem={this.state.botItem}
-                                    listLanguages={this.state.listLanguages}
-                                    listBuiltIns={this.state.listBuiltIns}/>
+                                    botItem={botItem}
+                                    listLanguages={listLanguages}
+                                    listBuiltIns={listBuiltIns}/>
                             : null
                     }
                 </Modal>

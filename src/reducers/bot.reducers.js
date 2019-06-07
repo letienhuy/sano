@@ -33,9 +33,11 @@ const initialState = {
     totalPages: 1,
     deleteList: [],
     cloneList: [],
+    listLanguages: [],
+    listTemplates: [],
+    listBuiltIns: [],
     showDebug: false,
     message: null,
-    created: false,
     loading: false
 }
 
@@ -47,6 +49,9 @@ export default function bots(state = initialState, action) {
             return {
                 ...state,
                 list: action.data,
+                listLanguages: action.listLanguages,
+                listTemplates: action.listTemplates,
+                listBuiltIns: action.listBuiltIns,
                 currentPage: action.current_page,
                 totalPages: action.total_pages
             };
@@ -63,7 +68,6 @@ export default function bots(state = initialState, action) {
                 list: [
                     action.data, ...state.list
                 ],
-                created: true,
                 loading: false
             }
         case CREATE_BOT_FAILURE:

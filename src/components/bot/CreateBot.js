@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {BOT_BUILTIN, BOT_NORMAL, BOT_TEMPLATE} from '../../constants/bot.constants';
+import { BOT_NORMAL } from '../../constants/bot.constants';
 import { Validation } from '../../helpers/helper';
 import Select from 'react-select';
 import { createNewBot } from '../../actions/bot.actions';
 import { HashLoader } from 'react-spinners';
+import { isEqual } from 'lodash';
 
 export class CreateBot extends Component {
     static propTypes = {
@@ -37,16 +38,13 @@ export class CreateBot extends Component {
         }
         this.validate = new Validation();
     }
-
-    componentDidMount() {
-        
-    }
     componentWillReceiveProps(newProps){
         const { listLanguages, listTemplates } = newProps;
-        const { created } = newProps.bot;
-        if(created){
+        const { list } = newProps.bot;
+        if(!isEqual(list, this.props.bot.list)){
             this.clearFormData();
         }
+    
         if(listLanguages.length && listTemplates.length){
             let languageOptions = [];
             let templateOptions = [];

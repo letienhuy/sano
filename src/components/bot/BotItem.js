@@ -26,7 +26,7 @@ export class BotItem extends Component {
             buttons: [
                 {
                     title: "Xoá",
-                    style: {backgroundColor: '#ff0000'},
+                    style: {background: '#ff0000'},
                     onClick: () => dispatch(deleteBot(item._id))
                 },
                 {
