@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {Link, withRouter} from 'react-router-dom';
-import { route, setActive } from '../../routes';
+import { route, setActive } from '../../../routes';
 
 export class Sidebar extends Component {
     componentDidMount(){

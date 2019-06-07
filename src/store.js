@@ -7,7 +7,7 @@ const sagaMiddleware = createSagaMiddleware();
 let initialUser = null;
 
 try{
-    initialUser = JSON.parse(atob(localStorage.getItem('user')));
+    initialUser = JSON.parse(unescape(atob(localStorage.getItem('user'))));
 }catch(e){
     localStorage.removeItem('user');
     localStorage.removeItem('accessToken');

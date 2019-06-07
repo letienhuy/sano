@@ -19,3 +19,6 @@ export const BOT_DONE_STATUS = 0;
 export const BOT_NORMAL = 'normal';
 export const BOT_TEMPLATE = 'template';
 export const BOT_BUILTIN = 'builtin';
+export const SELECTED_BOT = 'SELECTED_BOT';
+export const SHOW_DEBUG = 'SHOW_DEBUG';
+export const HIDE_DEBUG = 'HIDE_DEBUG';

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import Header from '../layouts/Header';
+import Header from '../layout/Header';
 import { login } from '../../actions/user.actions';
 import { HashLoader } from 'react-spinners';
 

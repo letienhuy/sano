@@ -13,16 +13,27 @@ import {
     UPDATE_BOT_FAILURE,
     CLONE_BOT_START,
     CLONE_BOT_SUCCESS,
-    CLONE_BOT_FAILURE
+    CLONE_BOT_FAILURE,
+    SELECTED_BOT,
+    SHOW_DEBUG,
+    HIDE_DEBUG
 } from '../constants/bot.constants';
 
+let selectedBot = null;
+try{
+    selectedBot = JSON.parse(unescape(atob(localStorage.getItem('bsel'))));
+}catch(e){
+    localStorage.removeItem('bsel');
+}
+
 const initialState = {
-    selectedBot: null,
+    selectedBot: selectedBot,
     list: [],
     currentPage: 1,
     totalPages: 1,
     deleteList: [],
     cloneList: [],
+    showDebug: false,
     message: null,
     created: false,
     loading: false
@@ -103,19 +114,28 @@ export default function bots(state = initialState, action) {
         case DELETE_BOT_SUCCESS:
             return {
                 ...state,
-                list: state
-                    .list
-                    .filter((obj) => obj._id !== action.botId),
-                deleteList: state
-                    .deleteList
-                    .filter((id) => id !== action.botId)
+                list: state.list.filter((obj) => obj._id !== action.botId),
+                deleteList: state.deleteList.filter((id) => id !== action.botId)
             }
         case DELETE_BOT_FAILURE:
             return {
                 ...state,
-                deleteList: state
-                    .deleteList
-                    .filter((id) => id !== action.botId)
+                deleteList: state.deleteList.filter((id) => id !== action.botId)
+            }
+        case SELECTED_BOT:
+            return {
+                ...state,
+                selectedBot: action.data
+            }
+        case SHOW_DEBUG:
+            return {
+                ...state,
+                showDebug: true
+            }
+        case HIDE_DEBUG:
+            return {
+                ...state,
+                showDebug: false
             }
         default:
             return state;

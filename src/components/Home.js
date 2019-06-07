@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Sidebar from './layouts/Sidebar';
-import Header from './layouts/Header';
+import Sidebar from './layout/sidebar/Sidebar';
+import Header from './layout/Header';
 
 export class Home extends Component {
 

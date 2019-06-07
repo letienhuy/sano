@@ -2,10 +2,11 @@ import React from 'react';
 import _ from 'lodash';
 import {Switch, Route} from 'react-router-dom';
 import PrivateRoute from './helpers/PrivateRoute';
-import NotFound from './components/errors/NotFound';
+import NotFound from './components/error/NotFound';
 import Home from "./components/Home";
 import Login from "./components/auth/Login";
-import Bot from './components/bots/Bot';
+import Bot from './components/bot/Bot';
+import Intent from './components/bot/intent/Intent';
 
 const routes = {
     public: [
@@ -21,6 +22,54 @@ const routes = {
             name: "bot",
             path: "/bots",
             component: Bot,
+            authorise: false
+        },
+        {
+            name: "bot.intent",
+            path: "/bots/intent",
+            component: Intent,
+            authorise: false
+        },
+        {
+            name: "bot.entity",
+            path: "/bots/entity",
+            component: Intent,
+            authorise: false
+        },
+        {
+            name: "bot.inbox",
+            path: "/bots/inbox",
+            component: Intent,
+            authorise: false
+        },
+        {
+            name: "bot.knowledge",
+            path: "/bots/knowledge",
+            component: Intent,
+            authorise: false
+        },
+        {
+            name: "bot.integration",
+            path: "/bots/integration",
+            component: Intent,
+            authorise: false
+        },
+        {
+            name: "bot.training",
+            path: "/bots/training",
+            component: Intent,
+            authorise: false
+        },
+        {
+            name: "bot.rating",
+            path: "/bots/rating",
+            component: Intent,
+            authorise: false
+        },
+        {
+            name: "bot.customer",
+            path: "/bots/customer",
+            component: Intent,
             authorise: false
         },
         {

@@ -344,6 +344,7 @@ header{
             line-height: 35px;
             font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
             text-transform: uppercase;
+            color: #000000;
         }
         .close{
             position: absolute;
@@ -391,7 +392,7 @@ header{
                 position: relative;
                 display: block;
                 max-width: 100%;
-                min-height: 40px;
+                min-height: 35px;
                 margin-bottom: 5px;
                 .text{
                     display: inline-block;
@@ -399,6 +400,7 @@ header{
                     padding-left: 10px;
                     border-radius: 10px;
                     background-color: #eee;
+                    color: #000000;
                     font-size: 14px;
                     line-height: 25px;
                 }
@@ -416,6 +418,7 @@ header{
                         height: 35px;
                         padding: 5px 5px 0 0;
                         border-radius: 50%;
+                        border: 1px solid #ccc;
                     }
                 }
                 &.out{

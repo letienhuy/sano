@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deleteBot, cloneBot } from '../../actions/bot.actions';
+import { withRouter } from 'react-router-dom';
+import { route } from '../../routes';
+import { deleteBot, cloneBot, selectedBot } from '../../actions/bot.actions';
 import { HashLoader } from 'react-spinners';
-import Skeleton from 'react-skeleton-loader';
-import { showConfirm } from '../layouts/Confirm';
-import { BOT_SKELETON_STOP } from '../../constants/bot.constants';
+import { showConfirm } from '../layout/Confirm';
 
 export class BotItem extends Component {
     static propTypes = {
         item: PropTypes.object.isRequired
+    }
+
+    handleItemClick = () => {
+        const { history, dispatch, item } = this.props;
+        dispatch(selectedBot(item));
+        history.push(route('bot.intent'));
     }
 
     handleDelete = () => {
@@ -38,7 +44,7 @@ export class BotItem extends Component {
         const { _id, name, description, created_at, language, updated_at} = this.props.item;
         const { deleteList } = this.props.bot;
         return (
-            <div className="grid-item with-border">
+            <div className="grid-item with-border" onClick={this.handleItemClick}>
                 {deleteList.find((id) => id === _id) ? 
                     <div className="load-deleting">
                         <HashLoader
@@ -73,4 +79,4 @@ const mapStateToProps = (state) => ({
     bot: state.botReducer
 });
 
-export default connect(mapStateToProps)(BotItem);
+export default withRouter(connect(mapStateToProps)(BotItem));

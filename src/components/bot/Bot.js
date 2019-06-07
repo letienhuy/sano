@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import Header from '../layouts/Header';
-import Sidebar from '../layouts/Sidebar';
+import Header from '../layout/Header';
+import Sidebar from '../layout/sidebar/Sidebar';
 import {fetchBots} from '../../actions/bot.actions';
 import * as API from '../../helpers/API';
 import BotItem from './BotItem';
 import CreateBot from './CreateBot';
 import EditBot from './EditBot';
-import Modal from '../layouts/Modal';
+import Modal from '../layout/Modal';
 import {BOT_TEMPLATE, BOT_BUILTIN} from '../../constants/bot.constants';
 import Skeleton from 'react-skeleton-loader';
 import Scroll from 'simplebar-react';

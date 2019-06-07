@@ -3,14 +3,14 @@ import * as API from '../helpers/API';
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
 import toast from 'cogo-toast';
 import {LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILURE, FETCH_USER_START, FETCH_USER_SUCCESS} from '../constants/user.constants';
-import {FETCH_LIST_BOT_START, FETCH_LIST_BOT_SUCCESS, FETCH_LIST_BOT_FAILURE, CREATE_BOT_START, CREATE_BOT_SUCCESS, CREATE_BOT_FAILURE, DELETE_BOT_SUCCESS, DELETE_BOT_FAILURE, DELETE_BOT_START, UPDATE_BOT_START, UPDATE_BOT_FAILURE, UPDATE_BOT_SUCCESS, CLONE_BOT_START, CLONE_BOT_SUCCESS, CLONE_BOT_FAILURE} from '../constants/bot.constants';
+import {FETCH_LIST_BOT_START, FETCH_LIST_BOT_SUCCESS, FETCH_LIST_BOT_FAILURE, CREATE_BOT_START, CREATE_BOT_SUCCESS, CREATE_BOT_FAILURE, DELETE_BOT_SUCCESS, DELETE_BOT_FAILURE, DELETE_BOT_START, UPDATE_BOT_START, UPDATE_BOT_FAILURE, UPDATE_BOT_SUCCESS, CLONE_BOT_START, CLONE_BOT_SUCCESS, CLONE_BOT_FAILURE, SELECTED_BOT} from '../constants/bot.constants';
 
 const delay = (ms) => new Promise(cb => setTimeout(cb, ms));
 
 export function* fetchUser(action) {
     try {
         const data = yield call(API.fetchUser, action.access_token);
-        localStorage.setItem('user', btoa(JSON.stringify(data.data.data)));
+        localStorage.setItem('user', btoa(escape(JSON.stringify(data.data.data))));
         yield put({
             type: FETCH_USER_SUCCESS,
             user: data.data.data
@@ -26,7 +26,7 @@ export function* authentication(action) {
         const data = yield call(API.postLogin, action.name, action.password);
         const user = yield call(API.fetchUser, data.data.access_token);
         localStorage.setItem("accessToken", data.data.access_token);
-        localStorage.setItem('user', btoa(JSON.stringify(user.data.data)));
+        localStorage.setItem('user', btoa(escape(JSON.stringify(user.data.data))));
         yield put({
             type: FETCH_USER_SUCCESS,
             user: user.data.data
@@ -47,7 +47,6 @@ export function* authentication(action) {
                 loading: false
             });
         }
-        yield put(hideLoading());
     } finally {
         yield put(hideLoading());
     }
@@ -120,6 +119,10 @@ export function* deleteBot(action){
     }
 }
 
+export function* saveSelectedBot(action){
+    localStorage.setItem('bsel', btoa(escape(JSON.stringify(action.data))));
+}
+
 //End middleware with Bot
 
 
@@ -131,6 +134,7 @@ function* rootSaga() {
     yield takeEvery(CLONE_BOT_START, cloneBot);
     yield takeEvery(UPDATE_BOT_START, updateBot);
     yield takeEvery(DELETE_BOT_START, deleteBot);
+    yield takeEvery(SELECTED_BOT, saveSelectedBot);
 }
 
 export default rootSaga;
