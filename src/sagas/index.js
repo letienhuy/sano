@@ -23,9 +23,10 @@ import {
     BOT_TEMPLATE,
     BOT_BUILTIN
 } from '../constants/bot.constants'
+import { FETCH_INTENT_START, FETCH_INTENT_FAILURE, FETCH_INTENT_SUCCESS, DELETE_INTENT_START, DELETE_INTENT_FAILURE, DELETE_INTENT_SUCCESS } from '../constants/intent.constants';
 const delay = (ms) => new Promise(cb => setTimeout(cb, ms));
 
-export function* fetchUser(action) {
+function* fetchUser(action) {
     try {
         const response = yield call(API.fetchUser, action.access_token);
         localStorage.setItem('user', btoa(escape(JSON.stringify(response.data.data))));
@@ -38,7 +39,7 @@ export function* fetchUser(action) {
     }
 }
 
-export function* authentication(action) {
+function* authentication(action) {
     try {
         yield put(showLoading());
         const response = yield call(API.postLogin, action.name, action.password);
@@ -72,7 +73,7 @@ export function* authentication(action) {
 
 //Middleware with Bot
 
-export function* fetchingListBot(action){
+function* fetchingListBot(action){
     try{
         yield put(showLoading());
         const [ response, listLanguages , listTemplates, listBuiltIns] = yield all([
@@ -94,11 +95,12 @@ export function* fetchingListBot(action){
             yield toast.error("Tải danh sách trợ lý ảo thất bại", {position: "top-right"});
         }
     } finally {
+        yield delay(100);
         yield put(hideLoading());
     }
 }
 
-export function* createNewBot(action){
+function* createNewBot(action){
     try{
         const response = yield call(API.createNewBot, action.data);
         yield put({type: CREATE_BOT_SUCCESS, data: response.data.data});
@@ -111,7 +113,7 @@ export function* createNewBot(action){
     }
 }
 
-export function* cloneBot(action){
+function* cloneBot(action){
     try{
         const response = yield call(API.cloneBot, action.botId);
         yield put({type: CLONE_BOT_SUCCESS, data: response.data.data, botId: action.botId});
@@ -124,7 +126,7 @@ export function* cloneBot(action){
     }
 }
 
-export function* updateBot(action){
+function* updateBot(action){
     try{
         const response = yield call(API.editBot, action.data._id, action.data);
         yield put({type: UPDATE_BOT_SUCCESS, data: response.data.data});
@@ -136,7 +138,7 @@ export function* updateBot(action){
         }
     }
 }
-export function* deleteBot(action){
+function* deleteBot(action){
     try{
         const response = yield call(API.deleteBot, action.botId);
         yield put({type: DELETE_BOT_SUCCESS, botId: action.botId});
@@ -149,12 +151,36 @@ export function* deleteBot(action){
     }
 }
 
-export function* saveSelectedBot(action){
-    yield localStorage.setItem('bsel', btoa(escape(JSON.stringify(action.data))));
+//End middleware with Bot
+//Middleware Intents
+
+function* fetchListIntent(action){
+    try{
+        yield put(showLoading());
+        const response = yield call(API.fetchIntents, action.botId);
+        yield put({type: FETCH_INTENT_SUCCESS, data: response.data.data});
+    }catch(error){
+        yield put({type: FETCH_INTENT_FAILURE});
+        yield toast.error('Không thể load được kịch bản!', {position: "top-right"});
+    }finally{
+        yield delay(100);
+        yield put(hideLoading());
+    }
+}
+function* deleteIntent(action){
+    try{
+        const response = yield call(API.deleteIntent, action.intentId);
+        yield put({type: DELETE_INTENT_SUCCESS, intentId: action.intentId});
+        yield toast.success(response.data.message, {position: "top-right"});
+    }catch(error){
+        if(error.response){
+            yield put({type: DELETE_INTENT_FAILURE, intentId: action.intentId});
+            yield toast.error(error.response.data.message, {position: "top-right"});
+        }
+    }
 }
 
-//End middleware with Bot
-
+//End intent
 
 function* rootSaga() {
     yield takeEvery(LOGIN_START, authentication);
@@ -164,7 +190,8 @@ function* rootSaga() {
     yield takeEvery(CLONE_BOT_START, cloneBot);
     yield takeEvery(UPDATE_BOT_START, updateBot);
     yield takeEvery(DELETE_BOT_START, deleteBot);
-    yield takeEvery(SELECTED_BOT, saveSelectedBot);
+    yield takeEvery(FETCH_INTENT_START, fetchListIntent);
+    yield takeEvery(DELETE_INTENT_START, deleteIntent);
 }
 
 export default rootSaga;

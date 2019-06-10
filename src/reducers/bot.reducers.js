@@ -19,15 +19,8 @@ import {
     HIDE_DEBUG
 } from '../constants/bot.constants';
 
-let selectedBot = null;
-try{
-    selectedBot = JSON.parse(unescape(atob(localStorage.getItem('bsel'))));
-}catch(e){
-    localStorage.removeItem('bsel');
-}
-
 const initialState = {
-    selectedBot: selectedBot,
+    selectedBot: null,
     list: [],
     currentPage: 1,
     totalPages: 1,

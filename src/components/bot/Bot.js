@@ -56,12 +56,12 @@ export class Bot extends Component {
                                 return(
                                     <div className="col-3" key={key}>
                                         <div className="grid-item with-border">
-                                            <Skeleton borderRadius={0} width="100%" height="25px"/>
-                                            <Skeleton borderRadius={0} width="100%"/>
-                                            <Skeleton borderRadius={0} width="130px" height="15px"/>
+                                            <Skeleton borderRadius={0} width="100%" height="20px"/>
+                                            <Skeleton borderRadius={0} width="100%" height="12px"/>
+                                            <Skeleton borderRadius={0} width="130px" height="12px"/>
                                             <hr/>
-                                            <Skeleton borderRadius={0} width="100%" height="15px"/>
-                                            <Skeleton borderRadius={0} width="100%" height="15px"/>
+                                            <Skeleton borderRadius={0} width="100%" height="12px"/>
+                                            <Skeleton borderRadius={0} width="100%" height="12px"/>
                                         </div>
                                     </div>
                                 )

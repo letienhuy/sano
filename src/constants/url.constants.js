@@ -9,3 +9,10 @@ export const BOT_URL = `${API_URL}/bots`;
 export const FETCH_LIST_BOT = `${BOT_URL}/list`;
 export const FETCH_LIST_LANGUAGE = `${BOT_URL}/languages/list`;
 export const FETCH_LIST_TEMPLATE = `${BOT_URL}/templates/list`;
+export const FETCH_LIST_KNOWLEDGE = '/knowledges/list';
+export const FETCH_LIST_INTENT = '/intents/list';
+
+export const INTENT_URL = `${API_URL}/intents`;
+export const INTENT_SAMPLE_URL = '/intent-samples';
+export const FETCH_LIST_INTENT_SAMPLE = `${INTENT_SAMPLE_URL}/list`;
+export const INTENT_SAMPLE_NORMALIZED = `${INTENT_SAMPLE_URL}/normalized`;

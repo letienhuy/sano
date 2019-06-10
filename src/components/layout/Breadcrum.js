@@ -20,7 +20,7 @@ export class Breadcrum extends Component {
                         <Link to="/">Trang chủ</Link>
                     </li>
                     <li>
-                        <Link to="/bots">Trợ lý ảo</Link>
+                        <Link to="/bot">Trợ lý ảo</Link>
                     </li>
                     {
                         this.props.breadcrum ?

@@ -30,7 +30,7 @@ export function deleteBot(botId){
         botId
     }
 }
-export function selectedBot(data){
+export function selectBot(data){
     return{
         type: SELECTED_BOT,
         data

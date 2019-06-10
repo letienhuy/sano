@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {BOT_BUILTIN, BOT_NORMAL, BOT_TEMPLATE} from '../../constants/bot.constants';
+import {BOT_NORMAL} from '../../constants/bot.constants';
 import { Validation } from '../../helpers/helper';
 import Select from 'react-select';
 import { editBot } from '../../actions/bot.actions';

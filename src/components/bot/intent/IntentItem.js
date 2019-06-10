@@ -2,32 +2,32 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { route } from '../../routes';
-import { deleteBot, cloneBot, selectBot } from '../../actions/bot.actions';
 import { HashLoader } from 'react-spinners';
-import { showConfirm } from '../layout/Confirm';
+import { showConfirm } from '../../layout/Confirm';
+import { deleteIntent, cloneIntent, selectIntent } from '../../../actions/intent.action';
+import { route } from '../../../routes';
 
-export class BotItem extends Component {
+export class IntentItem extends Component {
     static propTypes = {
         item: PropTypes.object.isRequired
     }
 
     handleItemClick = () => {
-        const { history, dispatch, item } = this.props;
-        dispatch(selectBot(item));
-        history.push(route('bot.intent'));
+        const { item , dispatch, history } = this.props;
+        dispatch(selectIntent(item));
+        history.push(route('bot.intent.sample'));
     }
 
     handleDelete = () => {
         const { item , dispatch } = this.props;
         dispatch(showConfirm({
-            title: "Xoá trợ lý ảo",
-            message: <div>Xác nhận xoá trợ lý ảo <b>{item.name}</b></div>,
+            title: "Xoá kịch bản",
+            message: <div>Xác nhận xoá kịch bản <b>{item.name}</b></div>,
             buttons: [
                 {
                     title: "Xoá",
                     style: {background: '#ff0000'},
-                    onClick: () => dispatch(deleteBot(item._id))
+                    onClick: () => dispatch(deleteIntent(item._id))
                 },
                 {
                     title: "Huỷ"
@@ -37,12 +37,13 @@ export class BotItem extends Component {
     }
 
     handleClone = () => {
-        const { item, dispatch } = this.props;
-        dispatch(cloneBot(item._id));
+        const { item, dispatch, history } = this.props;
+        dispatch(cloneIntent(item._id));
+        history.push(route('bot.intent.sample'))
     }
     render() {
-        const { _id, name, description, created_at, language, updated_at} = this.props.item;
-        const { deleteList } = this.props.bot;
+        const { _id, name, description, created_at, updated_at} = this.props.item;
+        const { deleteList } = this.props.intent;
         return (
             <div className="grid-item with-border">
                 <div onClick={this.handleItemClick}>
@@ -57,7 +58,6 @@ export class BotItem extends Component {
                         </div> : null}
                     <h2 className="grid-item_title">{name}</h2>
                     <span className="grid-item_description">{description}</span>
-                    <div className="grid-item_timeline"><b>Ngôn ngữ:</b> <span>{language ? language.name : 'Mặc định'}</span></div>
                     <hr/>
                     <div className="grid-item_timeline"><b>Updated: </b><span>{updated_at}</span></div>
                     <div className="grid-item_timeline"><b>Created: </b><span>{created_at}</span></div>
@@ -69,7 +69,6 @@ export class BotItem extends Component {
                 </button>
                 <div className="action-menu show">
                     <span onClick={this.handleClone}><i className="fal fa-clone"></i> Sao chép</span>
-                    <span onClick={() => this.props.onEdit()}><i className="fal fa-pen"></i> Sửa</span>
                     <span className="color-red" onClick={this.handleDelete}><i className="fal fa-trash"></i> Xoá</span>
                 </div>
             </div>
@@ -78,7 +77,7 @@ export class BotItem extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    bot: state.botReducer
+    intent: state.intentReducer
 });
 
-export default withRouter(connect(mapStateToProps)(BotItem));
+export default withRouter(connect(mapStateToProps)(IntentItem));

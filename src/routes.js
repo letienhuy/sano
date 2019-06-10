@@ -20,55 +20,61 @@ const routes = {
     private: [
         {
             name: "bot",
-            path: "/bots",
+            path: "/bot",
             component: Bot,
             authorise: false
         },
         {
             name: "bot.intent",
-            path: "/bots/intent",
+            path: "/bot/intent",
+            component: Intent,
+            authorise: false
+        },
+        {
+            name: "bot.intent.sample",
+            path: "/bot/intent/sample",
             component: Intent,
             authorise: false
         },
         {
             name: "bot.entity",
-            path: "/bots/entity",
+            path: "/bot/entity",
             component: Intent,
             authorise: false
         },
         {
             name: "bot.inbox",
-            path: "/bots/inbox",
+            path: "/bot/inbox",
             component: Intent,
             authorise: false
         },
         {
             name: "bot.knowledge",
-            path: "/bots/knowledge",
+            path: "/bot/knowledge",
             component: Intent,
             authorise: false
         },
         {
             name: "bot.integration",
-            path: "/bots/integration",
+            path: "/bot/integration",
             component: Intent,
             authorise: false
         },
         {
             name: "bot.training",
-            path: "/bots/training",
+            path: "/bot/training",
             component: Intent,
             authorise: false
         },
         {
             name: "bot.rating",
-            path: "/bots/rating",
+            path: "/bot/rating",
             component: Intent,
             authorise: false
         },
         {
             name: "bot.customer",
-            path: "/bots/customer",
+            path: "/bot/customer",
             component: Intent,
             authorise: false
         },
@@ -123,9 +129,7 @@ export function route(name, params = null) {
         throw ('Not route found with name: ', name);
     }
     if(params && typeof params === "object"){
-        Object.keys(params).filter((key) => {
-            path = path.replace(`:${key}`, params[key]);
-        });
+        Object.keys(params).filter((key) => path = path.replace(`:${key}`, params[key]));
     }
     return path;
 }

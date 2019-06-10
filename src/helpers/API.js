@@ -81,3 +81,32 @@ export async function deleteBot(botId) {
     });
     return result;
 }
+
+export async function fetchKnowledges(botId) {
+    let accessToken = localStorage.getItem('accessToken');
+    const result = await axios.get(url.BOT_URL + '/' + botId + url.FETCH_LIST_KNOWLEDGE, {
+        headers: {
+            "Authorization": `Bearer ${accessToken}`
+        }
+    });
+    return result;
+}
+export async function fetchIntents(botId) {
+    let accessToken = localStorage.getItem('accessToken');
+    const result = await axios.get(url.BOT_URL + '/' + botId + url.FETCH_LIST_INTENT, {
+        headers: {
+            "Authorization": `Bearer ${accessToken}`
+        }
+    });
+    return result;
+}
+
+export async function deleteIntent(intentId) {
+    let accessToken = localStorage.getItem('accessToken');
+    const result = await axios.delete(url.INTENT_URL + '/' + intentId, {
+        headers: {
+            "Authorization": `Bearer ${accessToken}`
+        }
+    });
+    return result;
+}
