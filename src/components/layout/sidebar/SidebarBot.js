@@ -6,6 +6,7 @@ import { route, setActive } from '../../../routes';
 export class SidebarBot extends Component {
     render() {
         const { selectedBot } = this.props.bot;
+        const { selectedIntent } = this.props.intent;
         if(!selectedBot) return <Redirect to={route('bot')}/>;
         return (
             <section className="sidebar">
@@ -17,6 +18,16 @@ export class SidebarBot extends Component {
                         <li className={setActive('bot.intent')}>
                             <i className="fal fa-scroll"></i>
                             <Link to={route('bot.intent')}>Kịch bản</Link>
+                            {selectedIntent ? (
+                                <ul className="sub-menu">
+                                    <li className={setActive('bot.intent.sample')}>
+                                        <Link to={route('bot.intent.sample')}>Câu kích hoạt</Link>
+                                    </li>
+                                    <li className={setActive('bot.intent.dialog')}>
+                                        <Link to={route('bot.intent.dialog')}>Luồng hội thoại</Link>
+                                    </li>
+                                </ul>
+                            ) : null}
                         </li>
                         <li className={setActive('bot.entity')}>
                             <i className="fal fa-box-open"></i>
@@ -55,6 +66,7 @@ export class SidebarBot extends Component {
 
 const mapStateToProps = (state) => ({
     bot: state.botReducer,
+    intent: state.intentReducer,
 });
 
 export default withRouter(connect(mapStateToProps)(SidebarBot));

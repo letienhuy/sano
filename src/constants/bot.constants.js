@@ -22,3 +22,5 @@ export const BOT_BUILTIN = 'builtin';
 export const SELECTED_BOT = 'SELECTED_BOT';
 export const SHOW_DEBUG = 'SHOW_DEBUG';
 export const HIDE_DEBUG = 'HIDE_DEBUG';
+export const  SET_TRAINING = "SET_TRAINING";
+export const  UNSET_TRAINING = "UNSET_TRAINING";

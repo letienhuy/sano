@@ -7,6 +7,7 @@ import Home from "./components/Home";
 import Login from "./components/auth/Login";
 import Bot from './components/bot/Bot';
 import Intent from './components/bot/intent/Intent';
+import Sample from './components/bot/intent/sample/Sample';
 
 const routes = {
     public: [
@@ -33,7 +34,13 @@ const routes = {
         {
             name: "bot.intent.sample",
             path: "/bot/intent/sample",
-            component: Intent,
+            component: Sample,
+            authorise: false
+        },
+        {
+            name: "bot.intent.dialog",
+            path: "/bot/intent/dialog",
+            component: Sample,
             authorise: false
         },
         {
@@ -135,17 +142,16 @@ export function route(name, params = null) {
 }
 
 export function setActive(routeName, routeParams){
-    let url = window.location.pathname;
     let routePath = route(routeName, routeParams);
-    if(routePath === url){
-        return 'active';
-    }else{
-        routePath = routePath.replace('/', '');
-        url = url.replace('/', '').split('/');
-        if(url.includes(routePath))
+    let url = window.location.pathname;
+    if(routePath === url) return 'active';
+    else{
+        url = url.split('/');
+        url.splice(-1, 1);
+        if(routePath === url.join('/')){
             return 'active';
+        }
     }
-
 }
 
 

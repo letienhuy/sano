@@ -62,7 +62,7 @@ export class EditBot extends Component {
 
     handleNameChange = () => {
         const { bot } = this.state;
-        bot.name = this.inputName.value;
+        bot.name = this.inputName.value.trim();
         this.setState({bot});
     }
     handleDescChange = () => {

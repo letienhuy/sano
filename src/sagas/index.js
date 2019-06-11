@@ -19,11 +19,24 @@ import {
     CLONE_BOT_START,
     CLONE_BOT_SUCCESS,
     CLONE_BOT_FAILURE,
-    SELECTED_BOT,
     BOT_TEMPLATE,
     BOT_BUILTIN
 } from '../constants/bot.constants'
-import { FETCH_INTENT_START, FETCH_INTENT_FAILURE, FETCH_INTENT_SUCCESS, DELETE_INTENT_START, DELETE_INTENT_FAILURE, DELETE_INTENT_SUCCESS } from '../constants/intent.constants';
+import {
+    FETCH_INTENT_START,
+    FETCH_INTENT_FAILURE,
+    FETCH_INTENT_SUCCESS,
+    DELETE_INTENT_START,
+    DELETE_INTENT_FAILURE,
+    DELETE_INTENT_SUCCESS,
+    CREATE_INTENT_FAILURE,
+    CREATE_INTENT_START,
+    CREATE_INTENT_SUCCESS,
+    FETCH_INTENT_SAMPLE_SUCCESS,
+    FETCH_INTENT_SAMPLE_FAILURE,
+    FETCH_INTENT_SAMPLE_START
+} from '../constants/intent.constants';
+
 const delay = (ms) => new Promise(cb => setTimeout(cb, ms));
 
 function* fetchUser(action) {
@@ -62,8 +75,7 @@ function* authentication(action) {
         }else{
             yield put({
                 type: LOGIN_FAILURE,
-                message: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                loading: false
+                message: "Có lỗi xảy ra, vui lòng thử lại sau."
             });
         }
     } finally {
@@ -109,6 +121,8 @@ function* createNewBot(action){
         if(error.response){
             yield put({type: CREATE_BOT_FAILURE});
             yield toast.error(error.response.data.message, {position: "top-right"});
+        }else{
+            yield put({type: CREATE_BOT_FAILURE});
         }
     }
 }
@@ -122,6 +136,8 @@ function* cloneBot(action){
         if(error.response){
             yield put({type: CLONE_BOT_FAILURE, botId: action.botId});
             yield toast.error(error.response.data.message, {position: "top-right"});
+        }else{
+            yield put({type: CLONE_BOT_FAILURE, botId: action.botId});
         }
     }
 }
@@ -135,6 +151,8 @@ function* updateBot(action){
         if(error.response){
             yield put({type: UPDATE_BOT_FAILURE});
             yield toast.error(error.response.data.message, {position: "top-right"});
+        }else{
+            yield put({type: UPDATE_BOT_FAILURE});
         }
     }
 }
@@ -147,12 +165,30 @@ function* deleteBot(action){
         if(error.response){
             yield put({type: DELETE_BOT_FAILURE});
             yield toast.error(error.response.data.message, {position: "top-right"});
+        }else{
+            yield put({type: DELETE_BOT_FAILURE});
         }
     }
 }
 
 //End middleware with Bot
 //Middleware Intents
+
+function* createIntent(action){
+    try{
+        const response = yield call(API.createIntent, action.data);
+        console.log(response);
+        yield put({type: CREATE_INTENT_SUCCESS, data: response.data.data});
+            yield toast.success(response.data.message, {position: "top-right"});
+    } catch(error){
+        if(error.response){
+            yield put({type: CREATE_INTENT_FAILURE});
+            yield toast.error(error.response.data.message, {position: "top-right"});
+        }else{
+            yield put({type: CREATE_INTENT_FAILURE});
+        }
+    }
+}
 
 function* fetchListIntent(action){
     try{
@@ -176,6 +212,8 @@ function* deleteIntent(action){
         if(error.response){
             yield put({type: DELETE_INTENT_FAILURE, intentId: action.intentId});
             yield toast.error(error.response.data.message, {position: "top-right"});
+        }else{
+            yield put({type: DELETE_INTENT_FAILURE, intentId: action.intentId});
         }
     }
 }
@@ -191,6 +229,7 @@ function* rootSaga() {
     yield takeEvery(UPDATE_BOT_START, updateBot);
     yield takeEvery(DELETE_BOT_START, deleteBot);
     yield takeEvery(FETCH_INTENT_START, fetchListIntent);
+    yield takeEvery(CREATE_INTENT_START, createIntent);
     yield takeEvery(DELETE_INTENT_START, deleteIntent);
 }
 

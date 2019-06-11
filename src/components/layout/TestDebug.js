@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { HIDE_DEBUG } from '../../constants/bot.constants';
 import Scroll from 'simplebar-react';
+import icon from '../../assets/icons/bot.png';
 
 export class TestDebug extends Component {
     static propTypes = {
@@ -31,7 +32,7 @@ export class TestDebug extends Component {
                     <div className="test-container">
                         <Scroll className="messages">
                             <div className="messages-item in">
-                                <img src="" alt=""/>
+                                <img src={icon}/>
                                 <span className="text">
                                     Lorem Lorem Lorem Lorem Lorem
                                 </span>

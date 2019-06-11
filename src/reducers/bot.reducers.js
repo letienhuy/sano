@@ -16,7 +16,9 @@ import {
     CLONE_BOT_FAILURE,
     SELECTED_BOT,
     SHOW_DEBUG,
-    HIDE_DEBUG
+    HIDE_DEBUG,
+    SET_TRAINING,
+    UNSET_TRAINING
 } from '../constants/bot.constants';
 
 const initialState = {
@@ -30,6 +32,7 @@ const initialState = {
     listTemplates: [],
     listBuiltIns: [],
     showDebug: false,
+    isTraining: false,
     message: null,
     loading: false
 }
@@ -133,6 +136,16 @@ export default function bots(state = initialState, action) {
             return {
                 ...state,
                 showDebug: false
+            }
+        case SET_TRAINING:
+            return {
+                ...state,
+                isTraining: true
+            }
+        case UNSET_TRAINING:
+            return {
+                ...state,
+                isTraining: false
             }
         default:
             return state;

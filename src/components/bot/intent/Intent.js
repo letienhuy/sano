@@ -4,23 +4,34 @@ import Header from '../../layout/Header';
 import SidebarBot from '../../layout/sidebar/SidebarBot';
 import Scroll from 'simplebar-react';
 import Breadcrum from '../../layout/Breadcrum';
-import { isEmpty } from 'lodash';
 import { fetchIntents } from '../../../actions/intent.action';
-import IntentItem from './IntentItem';
 import Skeleton from 'react-skeleton-loader';
+import IntentItem from './IntentItem';
+import Modal from '../../layout/Modal';
+import CreateIntent from './CreateIntent';
+import {isEmpty} from 'lodash';
 
 export class Intent extends Component {
-    static propTypes = {
-    }
-    componentDidMount() {
-        const { dispatch } = this.props;
-        const { selectedBot } = this.props.bot;
-        if(selectedBot){
-            dispatch(fetchIntents(selectedBot._id));
+    constructor(props) {
+        super(props);
+        this.state = {
+            isToggleCreate: false,
         }
     }
     
+    componentDidMount() {
+        const { dispatch } = this.props;
+        const { selectedBot } = this.props.bot;
+        const { list } = this.props.intent;
+        if(selectedBot && isEmpty(list)){
+            dispatch(fetchIntents(selectedBot._id));
+        }
+    }
+    componentWillReceiveProps(nextProps){
+        
+    }
     render() {
+        const { isToggleCreate } = this.state;
         const { list, cloneList } = this.props.intent;
         return (
             <div>
@@ -29,7 +40,7 @@ export class Intent extends Component {
                 <Scroll className="container">
                     <Breadcrum final="KỊCH BẢN"/>
                     <div className="description-alt">
-                        <button className="btn">Tạo kịch bản</button>
+                        <button className="btn" onClick={() => this.setState({isToggleCreate: true})}>Tạo kịch bản</button>
                     </div>
                     <div className="grid-fluid">
                         {
@@ -58,6 +69,12 @@ export class Intent extends Component {
                         }
                     </div>
                 </Scroll>
+                <Modal
+                    isToggle={isToggleCreate}
+                    onClose={() => this.setState({isToggleCreate: false})}
+                    title="Tạo kịch bản mới">
+                    <CreateIntent/>
+                </Modal>
             </div>
         )
     }

@@ -101,6 +101,16 @@ export async function fetchIntents(botId) {
     return result;
 }
 
+export async function createIntent(data) {
+    let accessToken = localStorage.getItem('accessToken');
+    const result = await axios.post(url.INTENT_URL, data, {
+        headers: {
+            "Authorization": `Bearer ${accessToken}`
+        }
+    });
+    return result;
+}
+
 export async function deleteIntent(intentId) {
     let accessToken = localStorage.getItem('accessToken');
     const result = await axios.delete(url.INTENT_URL + '/' + intentId, {
