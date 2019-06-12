@@ -31,10 +31,7 @@ import {
     DELETE_INTENT_SUCCESS,
     CREATE_INTENT_FAILURE,
     CREATE_INTENT_START,
-    CREATE_INTENT_SUCCESS,
-    FETCH_INTENT_SAMPLE_SUCCESS,
-    FETCH_INTENT_SAMPLE_FAILURE,
-    FETCH_INTENT_SAMPLE_START
+    CREATE_INTENT_SUCCESS
 } from '../constants/intent.constants';
 
 const delay = (ms) => new Promise(cb => setTimeout(cb, ms));
